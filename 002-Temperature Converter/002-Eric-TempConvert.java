@@ -7,12 +7,12 @@ public class TempConvert {
 		Scanner userInput = new Scanner(System.in);
 		System.out.println("Enter the temperature you would like to convert, followed by the corresponding letter.\nExample : 32C");
 		String answer = userInput.nextLine();
-		Double temp = Double.parseDouble(answer.substring(0,answer.length()-1));;
+		Double temp = Double.parseDouble(answer.substring(0,answer.length()-1));
 		
 		if (answer.charAt(answer.length()-1) == 'F'){
-			System.out.println(answer + " = " + ((temp - 32) * 5/9) + "°C");
+			System.out.println(answer + " = " + ((temp - 32) * 5/9) + "Â°C");
 		}else if (answer.charAt(answer.length()-1) == 'C'){
-			System.out.println(answer + " = " + (temp * 9/5 + 32) + "°F");
+			System.out.println(answer + " = " + (temp * 9/5 + 32) + "Â°F");
 		}else{
 			System.out.println("Invalid Temperature.");
 		}
