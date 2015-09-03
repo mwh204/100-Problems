@@ -2,7 +2,7 @@
 #include<stdlib.h>
 
 #define TREE '*'
-#define TRUNK 'H'
+#define TRUNK '#'
 
 void printTree(int height){
     int i,j;
@@ -13,7 +13,7 @@ void printTree(int height){
            putchar(' ');
         }for(j=0; j<=2*i; j++){
            putchar(TREE);
-        }if(i<height-1) puts("");
+        }if(i<height-1) putchar('\n');
     }
     putchar('\n');
     for(i=0; i<height-1; i++){
