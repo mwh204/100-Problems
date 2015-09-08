@@ -3,16 +3,6 @@
 #include<stdlib.h>
 #include<math.h>
 
-
-uint8_t* copy(uint8_t* a, size_t size){
-    int i;
-    uint8_t* b = malloc(sizeof(uint8_t)*size);
-    for(i=size-1; i>=0; i--){
-        b[i] = a[i];
-    }
-    return b;
-}
-
 size_t numDigits(uint32_t n){
     return (size_t)(log10(n)+1);
 }
@@ -24,6 +14,15 @@ uint8_t* setArrVal(uint64_t n, size_t size){
         a[i] = (uint8_t)(n % (int)pow(10, j--) /(int)pow(10, j));
     }
     return a;
+}
+
+uint8_t* copy(uint8_t* a, size_t size){
+    int i;
+    uint8_t* b = setArrVal(0, size);
+    for(i=size-1; i>=0; i--){
+        b[i] = a[i];
+    }
+    return b;
 }
 
 void printNum(uint8_t* a, size_t size){
@@ -64,7 +63,7 @@ size_t numDigitsFact(uint16_t n){
     for(i=1; i<=n; i++){
         sum += log10(i);
     }
-    return (int)ceil(sum);
+    return (size_t)ceil(sum);
 }
 
 uint8_t* factorial(uint8_t n, size_t size){
