@@ -8,7 +8,7 @@
 
 #define MAX_GUESSES (11)
 #define FILENAME "2of12inf.txt"
-#define WORD_LEN_MAX (24)*sizeof(char)
+#define MAX_WORD_SIZE (24)*sizeof(char)
 #define NUM_LINES (81536)
 
 const char* man = "\0(X)\n/|\\\n/\\";
@@ -16,7 +16,7 @@ const char* man = "\0(X)\n/|\\\n/\\";
 void drawMan(uint8_t level){
     int i;
     for(i=0; i<=level; i++){
-            printf("%c", man[i]);
+        printf("%c", man[i]);
     }
     printf("\n\n");
 }
@@ -50,7 +50,7 @@ void placeGuess(char guess, char* word, size_t length, uint8_t* guessed){
     }
 }
 
-char getInput(){
+char getInput(void){
     char c;
     printf("Guess a letter:");
     c = getchar();
@@ -70,16 +70,16 @@ int hasWon(uint8_t* guessed, size_t length){
 char* getWord(const char* filename){
     FILE* fp = fopen(filename, "r");
     srand((uint32_t)time(NULL));
-    uint32_t line = (rand() % NUM_LINES)-1, i;
-    char* word = malloc(WORD_LEN_MAX);
+    uint32_t line = rand() % NUM_LINES, i;
+    char* word = malloc(MAX_WORD_SIZE);
     for(i = 0; !feof(fp) && i <= line; i++){
-        fgets(word, WORD_LEN_MAX, fp);
+        fgets(word, MAX_WORD_SIZE, fp);
     }
     fclose(fp);
     return word;
 }
 
-void game(){
+void game(void){
     char* word = getWord(FILENAME);
     size_t length = strlen(word)-2;
     uint8_t guessed[length];
