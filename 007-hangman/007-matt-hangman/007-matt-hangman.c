@@ -1,17 +1,22 @@
 #include<stdio.h>
 #include<stdint.h>
+#include<stdlib.h>
 #include<string.h>
+#include<time.h>
 
 #define clrscr() puts ("\e[2J\e[1;1H")
 
-#define MAX_GUESSES 11
+#define MAX_GUESSES (11)
+#define FILENAME "2of12inf.txt"
+#define WORD_LEN_MAX (24)*sizeof(char)
+#define NUM_LINES (81536)
 
-const char* man = "\0(X)\n/|\\\n/\\\n";
+const char* man = "\0(X)\n/|\\\n/\\";
 
 void drawMan(uint8_t level){
     int i;
     for(i=0; i<=level; i++){
-        printf("%c", man[i]);
+            printf("%c", man[i]);
     }
     printf("\n\n");
 }
@@ -49,7 +54,7 @@ char getInput(){
     char c;
     printf("Guess a letter:");
     c = getchar();
-    fflush(stdin);
+    while('\n'!=getchar());
     return c;
 }
 
@@ -62,9 +67,21 @@ int hasWon(uint8_t* guessed, size_t length){
     return j;
 }
 
+char* getWord(const char* filename){
+    FILE* fp = fopen(filename, "r");
+    srand((uint32_t)time(NULL));
+    uint32_t line = (rand() % NUM_LINES)-1, i;
+    char* word = malloc(WORD_LEN_MAX);
+    for(i = 0; !feof(fp) && i <= line; i++){
+        fgets(word, WORD_LEN_MAX, fp);
+    }
+    fclose(fp);
+    return word;
+}
+
 void game(){
-    char* word = "hangman";
-    size_t length = strlen(word);
+    char* word = getWord(FILENAME);
+    size_t length = strlen(word)-2;
     uint8_t guessed[length];
     memset(guessed, 0, sizeof(guessed));
     uint8_t guesses = 0;
@@ -82,10 +99,12 @@ void game(){
         clrscr();
     }
     if(hasWon(guessed, length)){
-        printf("Y O U W O N");
+        printf("Y O U W O N\n");
     }else{
-        printf("G A M E O V E R");
+        printf("G A M E O V E R\n");
     }
+    printf("Word was: %s\n", word);
+    free(word);
 }
 
 int main(void){
