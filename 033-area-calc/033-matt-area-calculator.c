@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h>
 #include<math.h>
 
 typedef struct verts{
@@ -20,16 +20,15 @@ shape* shapeConstructor(const size_t n){
 
 shape* shapeDefiner(){
     size_t n, i;
-    double z;
     printf("Enter number of vertices(>=3): ");
     do{
-        scanf("%d", &n);
+        scanf("%lu", &n);
     }while(n<3);
     shape* a = shapeConstructor(n);
     for(i=0; i<n; i++){
-        printf("Enter x coord of vertice %d: ", i+1);
+        printf("Enter x coord of vertice %lu: ", i+1);
         scanf("%lf", &a->points[i].x);
-        printf("Enter y coord of vertice %d: ", i+1);
+        printf("Enter y coord of vertice %lu: ", i+1);
         scanf("%lf", &a->points[i].y);
     }
     return a;
@@ -53,6 +52,6 @@ double areaPolygon(shape* a){
 
 int main(void){
     shape *a = shapeDefiner();
-    printf("%f\n", areaPolygon(a));
+    printf("Area:%f\n", areaPolygon(a));
     shapeDeconstructor(a);
 }
