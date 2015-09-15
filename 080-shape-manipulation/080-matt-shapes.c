@@ -116,7 +116,7 @@ int main(void){
     printShape(a);
 
     //scaling
-    shapeScaler(a, 2.0);
+    shapeScaler(a, 1.5);
     printShape(a);
 
     shapeDeconstructor(a);
