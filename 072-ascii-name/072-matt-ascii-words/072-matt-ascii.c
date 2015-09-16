@@ -3,146 +3,83 @@
 
 #include "name.h"
 
+#define ORIG '#'    //do not change
 #define REPL "_/"
-#define SPACE "  "
+#define SPACE "  "  //must match number of chars in REPL
+
+void selChar(const char** a, int i){
+    int j;
+    for(j=0;j<WIDTH;j++){
+        a[i][j]==ORIG ? printf(REPL) : fputs(SPACE, stdout);
+    }
+    fputs(SPACE, stdout);
+}
 
 void printLetter(char a, int i){
     int j;
     switch(a){
         case 'a':
-        case 'A':
-            for(j=0;j<WIDTH;j++)A[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'A': selChar(A, i); break;
         case 'b':
-        case 'B':
-            for(j=0;j<WIDTH;j++)B[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'B': selChar(B, i); break;
         case 'c':
-        case 'C':
-            for(j=0;j<WIDTH;j++)C[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'C': selChar(C, i); break;
         case 'd':
-        case 'D':
-            for(j=0;j<WIDTH;j++)D[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'D': selChar(D, i); break;
         case 'e':
-        case 'E':
-            for(j=0;j<WIDTH;j++)E[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'E': selChar(E, i); break;
         case 'f':
-        case 'F':
-            for(j=0;j<WIDTH;j++)F[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'F': selChar(F, i); break;
         case 'g':
-        case 'G':
-            for(j=0;j<WIDTH;j++)G[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'G': selChar(G, i); break;
         case 'h':
-        case 'H':
-            for(j=0;j<WIDTH;j++)H[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'H': selChar(H, i); break;
         case 'i':
-        case 'I':
-            for(j=0;j<WIDTH;j++)I[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'I': selChar(I, i); break;
         case 'j':
-        case 'J':
-            for(j=0;j<WIDTH;j++)J[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'J': selChar(J, i); break;
         case 'k':
-        case 'K':
-            for(j=0;j<WIDTH;j++)K[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'K': selChar(K, i); break;
         case 'l':
-        case 'L':
-            for(j=0;j<WIDTH;j++)L[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'L': selChar(L, i); break;
         case 'm':
-        case 'M':
-            for(j=0;j<WIDTH;j++)M[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'M': selChar(M, i); break;
         case 'n':
-        case 'N':
-            for(j=0;j<WIDTH;j++)N[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'N': selChar(N, i); break;
         case 'o':
-        case 'O':
-            for(j=0;j<WIDTH;j++)O[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'O': selChar(O, i); break;
         case 'p':
-        case 'P':
-            for(j=0;j<WIDTH;j++)P[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'P': selChar(P, i); break;
         case 'q':
-        case 'Q':
-            for(j=0;j<WIDTH;j++)Q[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'Q': selChar(Q, i); break;
         case 'r':
-        case 'R':
-            for(j=0;j<WIDTH;j++)R[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'R': selChar(R, i); break;
         case 's':
-        case 'S':
-            for(j=0;j<WIDTH;j++)S[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'S': selChar(S, i); break;
         case 't':
-        case 'T':
-            for(j=0;j<WIDTH;j++)T[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'T': selChar(T, i); break;
         case 'u':
-        case 'U':
-            for(j=0;j<WIDTH;j++)U[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'U': selChar(U, i); break;
         case 'v':
-        case 'V':
-            for(j=0;j<WIDTH;j++)V[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'V': selChar(V, i); break;
         case 'w':
-        case 'W':
-            for(j=0;j<WIDTH;j++)W[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'W': selChar(W, i); break;
         case 'x':
-        case 'X':
-            for(j=0;j<WIDTH;j++)X[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'X': selChar(X, i); break;
         case 'y':
-        case 'Y':
-            for(j=0;j<WIDTH;j++)Y[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'Y': selChar(Y, i); break;
         case 'z':
-        case 'Z':
-            for(j=0;j<WIDTH;j++)Z[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '0':
-            for(j=0;j<WIDTH;j++)_0[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '1':
-            for(j=0;j<WIDTH;j++)_1[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '2':
-            for(j=0;j<WIDTH;j++)_2[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '3':
-            for(j=0;j<WIDTH;j++)_3[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '4':
-            for(j=0;j<WIDTH;j++)_4[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '5':
-            for(j=0;j<WIDTH;j++)_5[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '6':
-            for(j=0;j<WIDTH;j++)_6[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '7':
-            for(j=0;j<WIDTH;j++)_7[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '8':
-            for(j=0;j<WIDTH;j++)_8[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
-        case '9':
-            for(j=0;j<WIDTH;j++)_9[i][j]=='#'?printf(REPL):fputs(SPACE, stdout); fputs(SPACE, stdout);
-            break;
+        case 'Z': selChar(Z, i); break;
+        case '0': selChar(_0, i); break;
+        case '1': selChar(_1, i); break;
+        case '2': selChar(_2, i); break;
+        case '3': selChar(_3, i); break;
+        case '4': selChar(_4, i); break;
+        case '5': selChar(_5, i); break;
+        case '6': selChar(_6, i); break;
+        case '7': selChar(_7, i); break;
+        case '8': selChar(_8, i); break;
+        case '9': selChar(_9, i); break;
         case ' ':
             printf("%s ", SPC[i]);
             break;
