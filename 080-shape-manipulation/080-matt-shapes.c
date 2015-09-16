@@ -83,7 +83,7 @@ void printShape(shape* a){
     for(y = YMAX; y>=YMIN; y--){
         for(x = XMIN; x<=XMAX; x++){
             for(i=0; i<a->numVerts; i++){
-                if(round(a->points[i].x+0.5) == x && round(a->points[i].y+0.5) == y){
+                if(round(a->points[i].x) == x && round(a->points[i].y) == y){
                     putchar(ch = FILL);
                 }
             }
@@ -102,6 +102,7 @@ void printShape(shape* a){
 }
 
 int main(void){
+
     //creating the shape
     shape* a = shapeDefiner();
     printShape(a);
