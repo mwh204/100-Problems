@@ -8,10 +8,12 @@ size_t numDigits(uint32_t n){
 }
 
 uint8_t* setArrVal(uint64_t n, size_t size){
-    int i, j=numDigits(n), k=j;
+    int64_t i, j=numDigits(n), k=j, temp;
     uint8_t* a = malloc(sizeof(uint8_t)*size);
     for(i=0; i<k; i++){
-        a[i] = (uint8_t)(n % (int)pow(10, j--) /(int)pow(10, j));
+        temp = (int64_t)(n % (int64_t)pow(10, j--));
+        temp /= (int64_t)(pow(10, j));
+        a[i] = (uint8_t)temp;
     }
     return a;
 }
@@ -68,7 +70,6 @@ size_t numDigitsFact(uint16_t n){
 
 uint8_t* factorial(uint8_t n, size_t size){
     uint64_t i;
-    size_t numDigits = numDigitsFact(n);
     uint8_t *result = setArrVal(1, size);
     for(i=2; i<=n; i++){
         multiply(result, i, size);
