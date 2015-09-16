@@ -68,8 +68,9 @@ size_t numDigitsFact(uint16_t n){
     return (size_t)ceil(sum);
 }
 
-uint8_t* factorial(uint8_t n, size_t size){
+uint8_t* factorial(uint8_t n){
     uint64_t i;
+    size_t size = numDigitsFact(n);
     uint8_t *result = setArrVal(1, size);
     for(i=2; i<=n; i++){
         multiply(result, i, size);
@@ -79,9 +80,8 @@ uint8_t* factorial(uint8_t n, size_t size){
 
 int main(void){
     const int fact = 100;
-    const size_t numDigits = numDigitsFact(fact);
-    uint8_t *result = factorial(fact, numDigits);
-    printNum(result, numDigits);
+    uint8_t *result = factorial(fact);
+    printNum(result, numDigitsFact(fact));
     free(result);
     return EXIT_SUCCESS;
 }
