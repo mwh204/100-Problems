@@ -2,8 +2,8 @@
 #include<stdlib.h>
 #include<math.h>
 
-#define PI      3.14159265
-#define EPS     0.01    //float equality tolerance
+#define __USE_BSD //math.h M_PI constant
+//#define PRINT_COORDS //print the coordinates after drawing shape
 
 #define XMIN    -5
 #define XMAX    5
@@ -21,11 +21,6 @@ typedef struct shape{
     size_t numVerts;
     vertice* points;
 } shape;
-
-int feq(double a, double b){
-//comparing floats
-    return (fabs(a-b) < EPS);
-}
 
 shape* shapeConstructor(const size_t n){
     shape* a = malloc(sizeof(shape));
@@ -88,7 +83,7 @@ void printShape(shape* a){
     for(y = YMAX; y>=YMIN; y--){
         for(x = XMIN; x<=XMAX; x++){
             for(i=0; i<a->numVerts; i++){
-                if(feq(a->points[i].x, x) && feq(a->points[i].y, y)){
+                if(round(a->points[i].x+0.5) == x && round(a->points[i].y+0.5) == y){
                     putchar(ch = FILL);
                 }
             }
@@ -99,6 +94,11 @@ void printShape(shape* a){
         putchar('\n');
     }
     putchar('\n');
+#ifdef PRINT_COORDS
+    for(x=0; x<a->numVerts; x++){
+        printf("%d: (%f, %f)\n", x+1, a->points[x].x, a->points[x].y);
+    }
+#endif // PRINT_COORDS
 }
 
 int main(void){
@@ -112,7 +112,7 @@ int main(void){
     printShape(a);
 
     //rotation
-    shapeRotator(a, PI/2.0);
+    shapeRotator(a, M_PI/2.0);
     printShape(a);
 
     //scaling
