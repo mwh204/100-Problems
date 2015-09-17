@@ -1,0 +1,100 @@
+000 - Name Generator
+001 - Higher or Lower / Heads or tails
+002 - Temperature Converter
+003 - Calculate your Age in Seconds
+004 - Simple Encryption / Decryption
+005 - FizzBuzz
+006 - Rock Paper Scissors and/or Rock Paper Scissors Lizard Spock
+007 - Hangman
+008 - Love Calculator
+009 - Pseudorandom Quote Generator
+010 - Password Generator
+011 - Atomically Correct Time from an internet clock
+012 - Haiku Generator
+013 - Magic Eight Ball
+014 - Collatz Conjecture
+015 - Reverse a string
+016 - Count the Vowels in a string
+017 - Count the words in a string
+018 - Minesweeper
+019 - Connect Four
+020 - BMI Calculator
+021 - 4chan Thread Downloader (Images)
+022 - Sodoku Generator / Solver
+023 - Maze Game and Solution Algorithm
+024 - Decimal to Binary
+025 - Picross Solver
+026 - Eulerian Path
+027 - Fibonnaci Sequence Algorithm
+028 - Calculate and Print the Factorial of 100
+029 - Encryption Collection. Implement all of the tools in the Rumkin Collection: http://rumkin.com/tools/cipher/
+030 - Blackjack
+031 - Text Adventure Game
+032 - Generate an ASCII image of a Christmas tree to a user given height.
+033 - Area Calculator
+034 - Benfords Law
+035 - Hunt the Wumpus
+036 - Static Website Generator
+037 - Crossword Game
+038 - NTP Server
+039 - Stronger Password Generator (With less chance of predicting an outcome)
+040 - Find the largest number in an array, and print its position
+041 - ASCII Analogue Clock
+042 - Dijkstra's Algorithm
+043 - Text to Morse translator. Bonus points for generating the sound.
+044 - Noughts and Crosses / Tic Tac Toe / X and O
+045 - Snake Game
+046 - FTP Client (TCP or UDP with ACK)
+047 - Telnet Server
+048 - IMP Interpreter
+049 - Tetris
+050 - Conway's Game of Life
+051 - Web Crawler
+052 - Text Editor
+053 - RSS Feed Creator
+054 - Evaluate Binomial Coefficients
+055 - Reverse Polish Notation (RPN) Calculator
+056 - Output the Mandlebrot Set in ASCII
+057 - Sorting Algorithm
+058 - Convert Markup to HTML
+059 - The N Queens Problem
+060 - Details Validatior using Regular Expressions. Validate Phone numbers, emails, names etc.
+061 - Linked List
+062 - Mastermind
+063 - Random Image Generator
+064 - last.FM Scrobbler
+065 - Klingon Translator
+066 - Prime Number generator using a Sieve
+067 - Markov Chain
+068 - Graphical Digital Clock (GUI)
+069 - Oil Spill Game
+070 - Algorithm to calculate Triangle Numbers
+071 - Calculate a users typing speed
+072 - Name Art in ASCII
+073 - Towers of Hanoi
+074 - Quine
+075 - IRC Bot
+076 - Brainfuck Interpreter
+077 - Sorting Algorithm Audibilization and/or Visualisation
+078 - Chip-8 Emulator
+079 - Geekcode Generator (3.12)
+080 - Define, translate and rotate a shape with an arbitrary amount of vertices
+081 - Pong with Variable Vectors
+082 - Battleships with an Artificial Intelligence (NPC) opponent. Make sure they're beatable.
+083 - Simple Rougelike. Mega chapeau for multiplayer over LAN.
+084 - TCP chat program with basic encryption (XOR)
+085 - Incremental Economy Simulator (Look up Time of Exploration)
+086 - Encryption / Decryption Hiding text in an image
+087 - Calculate Pascals Triangle
+088 - Sine Wave Generator from Pseudorandom Numbers
+089 - Pacman Clone with Ghost AI
+090 - Flappy Birds Clone
+091 - Fast Fourier Transform
+092 - Graphical Digital Clock (GUI) that allows the user to set alarms and change colors
+093 - Binary Search / Binary Search Tree
+094 - Nintendo Oil Panic
+095 - Generate the Sierpinski Triangle
+096 - Calculate the Dot and Cross of two Vectors
+097 - Little Man Computer Simulator
+098 - Basic LISP Interpreter
+099 - Hailstone Sequence

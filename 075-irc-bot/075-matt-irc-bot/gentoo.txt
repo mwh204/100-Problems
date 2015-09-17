@@ -1,0 +1,431 @@
+#####INSTALLING MINIMAL GENTOO w/ xorg-server/awesome FULL GUIDE#####
+
+-Choosing iso-
+
+http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/
+
+##Download: 
+
+"install-amd64-minimal-(CURRENTVERSION).iso"
+
+-END-
+
+
+
+-Making Gentoo Live USB-
+
+
+##Linux:
+
+# dd bs=4M if=/path/to/gentoo.iso of=/dev/sdx && sync
+
+##replace 'sdx' with 'sdb' or whatever)
+
+##Windows/Linux (unetbootin):
+
+http://sourceforge.net/projects/unetbootin/files/latest/download
+
+##select disk image, browse to gentoo.iso, select usb, click 'OK'
+
+-END-
+
+
+
+-Booting To live CD and choosing kernel to boot into-
+
+##reboot
+
+##boot into usb:
+
+# gentoo (you will hear beeps prior)
+
+-END-
+
+
+
+-Preparing your HDD for gentoo install-
+NOTE: This section is for if you want gentoo and gentoo ONLY, see gentoo handbook page here:  https://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=1&chap=4
+
+# sgdisk --zap-all /dev/sda
+
+# fdisk /dev/sda
+
+Create the partition table:
+
+Command (m for help): type o and press Enter
+
+----------------------------------------------------------
+##Then create the first partition:
+
+Command (m for help): type n and press Enter
+
+Partition type: Select (default p): press Enter
+
+Partition number (1-4, default 1): press Enter
+
+First sector (2048-209715199, default 2048): press Enter
+
+Last sector, +sectors or +size{K,M,G,T,P} (2048-209715199....., default 209715199): type +20G and press Enter
+
+-----------------------------------------------------------
+##Then create a second partition:
+
+Command (m for help): type n and press Enter
+
+Partition type: Select (default p): press Enter
+
+Partition number (1-4, default 2): press Enter
+
+First sector (31459328-209715199, default 31459328): press Enter
+
+Last sector, +sectors or +size{K,M,G,T,P} (31459328-209715199....., default 209715199): press Enter
+
+# p (to see before applying)
+
+# w (to write changes)
+
+##Making file system:
+NOTE: Choose what you prefer
+
+# mkfs.ext4 /dev/sda1
+
+# mkfs.ext4 /dev/sda2
+
+# mount /dev/sda1 /mnt/gentoo
+
+# mkdir /mnt/gentoo/home
+
+# mount /dev/sda2 /mnt/gentoo/home
+-END-
+
+
+
+-NETWORK CONFIG-
+NOTE: This is just for the live cd and when chrooted into new environment, you will do something similar to this again later
+
+## Auto config script for pleb regular wep or eth0 connections:
+
+# net-setup (follow on screen instructions)
+
+# ping google.com (to test)
+
+## Manual config for WPA-PSK connections
+
+# nano -w /etc/wpa_supplicant.conf
+
+(NANO)
+
+network={
+	ssid="MYSSID"
+	key_mgmt=WPA-PSK
+	psk="MYPASS"
+}
+
+# ctrl + x (save and exit nano)
+
+# ifconfig -a (you find your wlan interface e.g. wlan0 or wlp4s0)
+
+# ifconfig wlan0 up
+
+# wpa_supplicant -iwlan0 -c/etc/wpa_supplicant.conf -B
+
+# dhcpcd wlan0
+
+# ping google.com (to test)
+
+##Working internet yet? If so, move on. If not, read the networking guide on the gentoo handbook page: https://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=1&chap=3
+-END-
+
+
+
+-Set date-
+
+# date --set="day month year 00:00:00" (24 hour time)
+-END-
+
+
+
+
+-CD into /mnt/gentoo-
+
+# cd /mnt/gentoo
+-END-
+
+
+
+
+-Downloading stage3 tarball and portage-
+
+# links gentoo.org/main/en/mirrors.xml
+
+## Nav to Argonne National Laboratory (http)* 
+
+## Nav to /pub/gentoo/releases/amd64/autobuilds/current-iso/
+
+## Select stage3-amd64-(CURRENTVERSION).tar.bz2
+
+## Download
+
+## Nav to /pub/gentoo/snapshots/
+
+## Select portage-latest.tar.xz
+
+## Download
+
+## superkey + q or ctrl + x to exit
+-END-
+
+
+
+-Installing linux base system-
+
+# tar xjpf stage3*
+
+# nano -w /mnt/gentoo/etc/portage/make.conf
+
+(NANO)
+
+##CFLAGS="-O2 -pipe"
+
+##should be changed to
+
+CFLAGS="-march=native -O2 -pipe"
+
+##USE flags should be added. Read:
+##http://www.gentoo.org/dyn/use-index.xml
+
+## (For mouse, keyboard, and Synaptics touchpad support)
+INPUT_DEVICES="evdev synaptics"
+## (For nVidia cards)
+VIDEO_CARDS="nouveau"
+## (For AMD/ATI cards)
+VIDEO_CARDS="radeon"
+## OR (For intel cards)
+VIDEO_CARDS="intel"
+
+# ctrl + x (save and exit)
+-END-
+
+
+
+-cp resolv.conf (network)-
+
+# cp -L /etc/resolv.conf /mnt/gentoo/etc/
+-END-
+
+
+
+-Chroot into new env-
+
+# mount -t proc proc /mnt/gentoo/proc
+
+# mount --rbind /sys /mnt/gentoo/sys
+
+# mount --rbind /dev /mnt/gentoo/dev
+
+# chroot /mnt/gentoo /bin/bash
+
+# source /etc/profile
+-END-
+
+
+
+-Setting up portage-
+
+# export PS1="(chroot) $PS1" (this is optional)
+
+# tar xjf port* -C usr/
+
+# emerge --sync
+-END-
+
+
+
+
+-Checking all news as read-
+
+# eselect news read all
+-END-
+
+
+
+
+-Selecting profile (basic selection)-
+
+# eselect profile list
+
+# eselect profile set 2
+
+# eselect profile list (checking to see if profile was set)
+-END-
+
+
+
+-Timezone-
+# ls /usr/share/zoneinfo
+
+# echo "US/East-Indiana" > /etc/timezone
+
+# emerge --config sys-libs/timezone-data
+-END-
+
+
+
+-Locale-
+
+# nano -w /etc/locale.gen (uncomment prefered locale)
+
+# locale-gen
+
+# env-update && source /etc/profile
+
+-END-
+
+
+
+
+-Kernel config-
+
+# emerge gentoo-sources
+
+# cd /usr/src/linux
+
+# make menuconfig
+
+## Xorg config for intel (KMS):
+NOTE:  http://wiki.gentoo.org/wiki/Xorg/Configuration
+
+Device Drivers --->
+  Input device support --->
+  <*>  Event interface
+
+Device Drivers --->
+  Graphics support --->
+    Support for frame buffer devices --->
+    ## (Disable all drivers, including VGA, Intel, nVidia, and ATI)
+ 
+    ## (Further down, enable basic console support. KMS uses this.)
+    Console display driver support --->
+      <*>  Framebuffer Console Support
+
+Device Drivers --->
+  Graphics support --->
+    /dev/agpgart (AGP Support) --->
+    <*>  Intel 440LX/BX/GX, I8xx and E7x05 chipset support
+    Direct Rendering Manager (XFree86 4.1.0 and higher DRI support) --->
+    <*>  Intel 8xx/9xx/G3x/G4x/HD Graphics
+    [*]    Enable modesetting on intel by default
+
+## Sound (ALSA) config:
+NOTE: http://wiki.gentoo.org/wiki/ALSA
+
+Device Drivers --->
+    Sound --->
+        <*> Sound card Support
+            <*> Advanced Linux Sound Architecture --->
+                [*]   PCI sound devices  --->
+
+                      Select the driver for your audio controller, e.g.:
+                      <*>   Intel HD Audio  ---> (snd-hda-intel)
+                            Select a codec or enable all and let the generic parse choose the right one:
+                            [*] Build Realtek HD-audio codec support
+                            [*] ...
+                            [*] Build Silicon Labs 3054 HD-modem codec support
+                            [*] Enable generic HD-audio codec parser
+
+## Wifi drivers:
+
+[*] Networking support  --->
+    [*] Wireless  --->
+        <*> cfg80211 - wireless configuration API
+        <*> Generic IEEE 802.11 Networking Stack (mac80211)
+
+    Device Drivers  --->
+    [*] Network device support  --->
+        [*] Wireless LAN  --->
+
+            Select the driver for your Wifi network device, e.g.:
+            <*> Broadcom 43xx wireless support (mac80211 stack) (b43)
+            [*]    Support for 802.11n (N-PHY) devices
+            [*]    Support for low-power (LP-PHY) devices
+            [*]    Support for HT-PHY (high throughput) devices
+            <*> Intel Wireless WiFi Next Gen AGN - Wireless-N/Advanced-N/Ultimate-N (iwlwifi)
+            <*> Intel Wireless WiFi 4965AGN (iwl4965)
+            <*> Intel PRO/Wireless 3945ABG/BG Network Connection (iwl3945)
+            <*> Ralink driver support  --->
+                <*>   Ralink rt27xx/rt28xx/rt30xx (USB) support (rt2800usb)
+
+## Save and exit menuconfig
+
+# make && make modules_install
+
+# make install
+-END-
+
+
+
+-Fstab config-
+# nano -w /etc/fstab
+(NANO)
+##Make it looks like this
+/dev/sda1   /            ext4    noatime              0 1
+/dev/sda2   /home        ext4    defaults             0 2
+/dev/cdrom  /mnt/cdrom   auto    noauto,user          0 0
+# Ctrl + x (save and exit)
+-END(ALMOST DONE)-
+
+
+
+
+
+-Hostname-
+# nano -w /etc/conf.d/hostname (choose a hostname)
+-END-
+
+
+
+
+-Network config (told you tou would do this again)-
+
+# nano -w /etc/conf.d/net
+(NANO)
+
+config_wlan0="dhcp"
+# ctrl + x (save and exit)
+
+# emerge --noreplace netifrc
+
+# cd /etc/init.d
+
+# ln -s net.lo net.wlan0 (remember to replace wlan0 with whatever you have)
+
+# rc-update add net.wlan0 default
+
+# nano -w /etc/hosts
+(NANO)
+
+#
+# /etc/hosts: static lookup table for host names
+#
+
+#<ip-address>	<hostname.domain.org>	<hostname>
+127.0.0.1	localhost.localdomain	localhost	myhostname
+::1		localhost.localdomain	localhost
+
+# End of file
+# ctrl + x (save and exit)
+-END-
+
+-Basic utils-
+
+# emerge xorg-server grub os-prober wpa_supplicant dhcpcd
+
+# grub2-install /dev/sda
+
+# grub2-mkconfig -o /boot/grub/grub.cfg
+
+# passwd (enter password)
+
+# exit
+
+# reboot
