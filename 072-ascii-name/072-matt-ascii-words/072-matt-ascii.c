@@ -23,7 +23,7 @@ char translatePos(char a){
 void printLetter(char a, int i){
     int j;
     for(j=0; j<WIDTH; j++){
-        LETTERS[translatePos(a)][i][j] == ORIG ? printf(REPL) : space();
+        LETTERS[(int)translatePos(a)][i][j] == ORIG ? printf(REPL) : space();
     }
     space();
 }
