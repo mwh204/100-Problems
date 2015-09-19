@@ -6,7 +6,8 @@
 #include "main.h"
 
 int isEmpty(point* pos){
-    return !grid[pos->x][pos->y].object;
+    return  (grid[pos->x][pos->y].object == NONE) ||
+            (grid[pos->x][pos->y].object == EXPLORED);
 }
 
 int inBounds(point* pos){
@@ -43,6 +44,7 @@ player* initPlayer(void){
     player *pl = malloc(sizeof(player));
     pl->arrows = NUM_ARR_PL;
     pl->pos = getEmptyPoint();
+    grid[pl->pos->x][pl->pos->y].object = OBJECTS[PLAYER].type;
     placeObj(pl->pos, OBJECTS[PLAYER]);
     return pl;
 }
@@ -95,7 +97,8 @@ char* playerMove(player* pl, DIR a, wumpus* w){
                 break;
             case BAT:
                 msg = "Bats carried you away!\n";
-                grid[pl->pos->x][pl->pos->y].object = OBJECTS[NONE].type;
+                grid[pl->pos->x][pl->pos->y].object = grid[pl->pos->x][pl->pos->y].explored ? OBJECTS[EXPLORED].type : OBJECTS[NONE].type;
+                grid[pl->pos->x][pl->pos->y].explored = 1;
                 pl->pos = getEmptyPoint();
                 grid[pl->pos->x][pl->pos->y].object = OBJECTS[PLAYER].type;
                 break;
@@ -108,6 +111,7 @@ char* playerMove(player* pl, DIR a, wumpus* w){
                 pl->pos->x = x0;
                 pl->pos->y = y0;
                 grid[pl->pos->x][pl->pos->y].object = OBJECTS[PLAYER].type;
+                grid[pl->pos->x][pl->pos->y].explored = 1;
                 break;
         }
     }
@@ -169,15 +173,15 @@ void drawGrid(player* pl){
 }
 
 int input(void){
-    char c;
+    char c = 0;
     printf("Enter a direction(wasd), or press f then a direction to fire\n:");
-    c = getchar();
+    do{ c = getchar(); } while(c == '\n');
     while('\n'!=getchar());
-    return c;
+    return (int)c;
 }
 
 char* action(player* pl, wumpus* w, int in){
-    char* msg;
+    char* msg = "";
     switch(in){
         case KEY_UP:
             msg = playerMove(pl, UP, w);
@@ -192,7 +196,7 @@ char* action(player* pl, wumpus* w, int in){
             msg = playerMove(pl, RIGHT, w);
             break;
         case KEY_SHOOT:
-            switch(input()){
+            switch(in = input()){
                 case KEY_DOWN: msg = playerShoot(pl, DOWN, w); break;
                 case KEY_LEFT: msg = playerShoot(pl, LEFT, w); break;
                 case KEY_RIGHT: msg = playerShoot(pl, RIGHT, w); break;
