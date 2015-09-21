@@ -22,7 +22,7 @@
 #define NUM_ARR_OBJ (2) //number of arrows on the ground
 #define NUM_ARR_PL  (5) //initial arrow count
 
-#define SEE_ALL       //uncomment to see hazards and items
+//#define SEE_ALL       //uncomment to see hazards and items
 #ifdef SEE_ALL
 #define cEMPTY      ' '
 #define cEXPLORED   '+'
