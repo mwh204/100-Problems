@@ -28,6 +28,14 @@ void placeObj(point* p, struct objs a){
     grid[p->x][p->y].object = a.type;
 }
 
+void rmObj(point* p, struct objs a){
+    if(grid[p->x][p->y].explored){
+        grid[p->x][p->y].object = OBJECTS[EXPLORED].type;
+    }else{
+        grid[p->x][p->y].object = OBJECTS[NONE].type;
+    }
+}
+
 void initGrid(void){
     int i,j;
     for(i=PIT; i<NUM_OBJ_TYPES; i++){
@@ -37,30 +45,21 @@ void initGrid(void){
             free(p);
         }
     }
-
 }
 
-player* initPlayer(void){
+player* initPlayer(OBJ_TYPE type){
     player *pl = malloc(sizeof(player));
     pl->arrows = NUM_ARR_PL;
     pl->pos = getEmptyPoint();
-    grid[pl->pos->x][pl->pos->y].object = OBJECTS[PLAYER].type;
-    placeObj(pl->pos, OBJECTS[PLAYER]);
+    placeObj(pl->pos, OBJECTS[type]);
     return pl;
 }
 
-wumpus* initWumpus(void){
-    wumpus *w = malloc(sizeof(wumpus));
-    w->pos = getEmptyPoint();
-    placeObj(w->pos, OBJECTS[WUMPUS]);
-    return w;
-}
-
-void wumpusMove(wumpus* w){
-    grid[w->pos->x][w->pos->y].object = OBJECTS[NONE].type;
+void wumpusMove(player* w){
+    rmObj(w->pos, OBJECTS[WUMPUS]);
     free(w->pos);
     w->pos = getEmptyPoint();
-    grid[w->pos->x][w->pos->y].object = OBJECTS[WUMPUS].type;
+    placeObj(w->pos, OBJECTS[WUMPUS]);
 }
 
 void playerNear(player* pl){
@@ -80,7 +79,7 @@ void playerNear(player* pl){
     }
 }
 
-char* playerMove(player* pl, DIR a, wumpus* w){
+char* playerMove(player* pl, DIR a, player* w){
     char* msg = "";
     int8_t x0 = pl->pos->x + DIRECTIONS[a].x;
     int8_t y0 = pl->pos->y + DIRECTIONS[a].y;
@@ -97,10 +96,10 @@ char* playerMove(player* pl, DIR a, wumpus* w){
                 break;
             case BAT:
                 msg = "Bats carried you away!\n";
-                grid[pl->pos->x][pl->pos->y].object = grid[pl->pos->x][pl->pos->y].explored ? OBJECTS[EXPLORED].type : OBJECTS[NONE].type;
+                rmObj(pl->pos, OBJECTS[PLAYER]);
                 grid[pl->pos->x][pl->pos->y].explored = 1;
                 pl->pos = getEmptyPoint();
-                grid[pl->pos->x][pl->pos->y].object = OBJECTS[PLAYER].type;
+                placeObj(pl->pos, OBJECTS[PLAYER]);
                 break;
             case ARROW:
                 msg = "You found an arrow!\n";
@@ -118,7 +117,7 @@ char* playerMove(player* pl, DIR a, wumpus* w){
     return msg;
 }
 
-char* playerShoot(player* pl, DIR a, wumpus* w){
+char* playerShoot(player* pl, DIR a, player* w){
     char* msg = "";
     if(pl->arrows > 0){
         pl->arrows--;
@@ -135,7 +134,7 @@ char* playerShoot(player* pl, DIR a, wumpus* w){
     return msg;
 }
 
-void endGame(player* pl, wumpus* w){
+void endGame(player* pl, player* w){
     free(pl->pos);
     free(pl);
     free(w->pos);
@@ -143,7 +142,7 @@ void endGame(player* pl, wumpus* w){
     exit(EXIT_SUCCESS);
 }
 
-void playerDie(player* pl, wumpus* w){
+void playerDie(player* pl, player* w){
     printf("You are dead\n");
     endGame(pl, w);
 }
@@ -180,7 +179,7 @@ int input(void){
     return (int)c;
 }
 
-char* action(player* pl, wumpus* w, int in){
+char* action(player* pl, player* w, int in){
     char* msg = "";
     switch(in){
         case KEY_UP:
@@ -215,8 +214,8 @@ char* action(player* pl, wumpus* w, int in){
 void game(void){
     srand((uint32_t)time(NULL));
     initGrid();
-    player* pl = initPlayer();
-    wumpus* w = initWumpus();
+    player* pl = initPlayer(PLAYER);
+    player* w = initPlayer(WUMPUS);
     char* msg = "";
     while(1){
         drawGrid(pl);

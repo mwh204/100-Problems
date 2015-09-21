@@ -58,10 +58,6 @@ typedef struct player {
     uint8_t arrows;
 } player;
 
-typedef struct wumpus {
-    point* pos;
-} wumpus;
-
 /*const arrays & enums*/
 tile grid[GRID_SIZE_X][GRID_SIZE_Y];
 
@@ -81,25 +77,25 @@ const struct objs {
     {ARROW, cARROW, NUM_ARR_OBJ}
 };
 
-/*Prototypes*/
+/*Prototypes */
 int isEmpty(point*);
 int inBounds(point*);
 point* getEmptyPoint(void);
 void placeObj(point*, struct objs);
 void initGrid(void);
-void endGame(player* pl, wumpus* w);
+void endGame(player* pl, player* w);
 void drawGrid(player*);
 int input(void);
-char* action(player*, wumpus*, int);
+char* action(player*, player*, int);
 void game(void);
 
-wumpus* initWumpus(void);
-void wumpusMove(wumpus*);
 
-player* initPlayer(void);
-char* playerMove(player*, DIR, wumpus*);
-char* playerShoot(player*, DIR, wumpus*);
+void wumpusMove(player*);
+
+player* initPlayer(OBJ_TYPE);
+char* playerMove(player*, DIR, player*);
+char* playerShoot(player*, DIR, player*);
 void playerNear(player*);
-void playerDie(player* pl, wumpus* w);
-
+void playerDie(player* pl, player* w);
+//*/
 #endif //_MAIN_H
