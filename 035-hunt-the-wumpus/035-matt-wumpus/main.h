@@ -8,6 +8,7 @@
 
 #define GRID_SIZE_X (5)
 #define GRID_SIZE_Y (5)
+#define PROB_MAX    (GRID_SIZE_X*GRID_SIZE_X*GRID_SIZE_Y*GRID_SIZE_Y) //max number of tries to get a random point
 
 #define KEY_QUIT    'q'
 #define KEY_SHOOT   'f'
@@ -18,10 +19,10 @@
 
 #define NUM_PITS    (2)
 #define NUM_BATS    (1)
-#define NUM_ARR_OBJ (4) //number of arrows on the ground
+#define NUM_ARR_OBJ (2) //number of arrows on the ground
 #define NUM_ARR_PL  (5) //initial arrow count
 
-//#define SEE_ALL       //uncomment to see hazards and items
+#define SEE_ALL       //uncomment to see hazards and items
 #ifdef SEE_ALL
 #define cEMPTY      ' '
 #define cEXPLORED   '+'
@@ -61,7 +62,7 @@ typedef struct player {
 /*const arrays & enums*/
 tile grid[GRID_SIZE_X][GRID_SIZE_Y];
 
-const point DIRECTIONS[NUM_DIR] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+const point DIRECTIONS[NUM_DIR] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 
 const struct objs {
     OBJ_TYPE type;
@@ -78,24 +79,22 @@ const struct objs {
 };
 
 /*Prototypes */
-int isEmpty(point*);
-int inBounds(point*);
+int isEmpty(point* pos);
+int inBounds(point* pos);
 point* getEmptyPoint(void);
-void placeObj(point*, struct objs);
+void placeObj(point* p, OBJ_TYPE a);
+void rmObj(point* p);
 void initGrid(void);
+player* initPlayer(OBJ_TYPE type);
+void wumpusMove(player* w);
+void playerNear(player* pl);
+char* playerMove(player* pl, DIR a, player* w);
+char* playerShoot(player* pl, DIR a, player* w);
 void endGame(player* pl, player* w);
-void drawGrid(player*);
-int input(void);
-char* action(player*, player*, int);
-void game(void);
-
-
-void wumpusMove(player*);
-
-player* initPlayer(OBJ_TYPE);
-char* playerMove(player*, DIR, player*);
-char* playerShoot(player*, DIR, player*);
-void playerNear(player*);
 void playerDie(player* pl, player* w);
+void drawGrid(player* pl, char* msg);
+int input(void);
+char* action(player* pl, player* w, int in);
+void game(void);
 //*/
 #endif //_MAIN_H

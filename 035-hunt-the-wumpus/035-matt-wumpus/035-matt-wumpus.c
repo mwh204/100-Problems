@@ -16,23 +16,28 @@ int inBounds(point* pos){
 }
 
 point* getEmptyPoint(void){
+    uint32_t i = 0;
     point* p = malloc(sizeof(point));
     do{
         p->x = rand() % GRID_SIZE_X;
         p->y = rand() % GRID_SIZE_Y;
-    }while(!isEmpty(p));
+    }while(!isEmpty(p) && i++<PROB_MAX);
+    if(i>=PROB_MAX){
+        printf("Board size not large enough\n");
+        endGame(NULL, NULL);
+    }
     return p;
 }
 
-void placeObj(point* p, struct objs a){
-    grid[p->x][p->y].object = a.type;
+void placeObj(point* p, OBJ_TYPE a){
+    grid[p->x][p->y].object = a;
 }
 
-void rmObj(point* p, struct objs a){
+void rmObj(point* p){
     if(grid[p->x][p->y].explored){
-        grid[p->x][p->y].object = OBJECTS[EXPLORED].type;
+        placeObj(p, EXPLORED);
     }else{
-        grid[p->x][p->y].object = OBJECTS[NONE].type;
+        placeObj(p, NONE);
     }
 }
 
@@ -41,7 +46,7 @@ void initGrid(void){
     for(i=PIT; i<NUM_OBJ_TYPES; i++){
         for(j=0; j<OBJECTS[i].num; j++){
             point* p = getEmptyPoint();
-            placeObj(p, OBJECTS[i]);
+            placeObj(p, OBJECTS[i].type);
             free(p);
         }
     }
@@ -51,15 +56,15 @@ player* initPlayer(OBJ_TYPE type){
     player *pl = malloc(sizeof(player));
     pl->arrows = NUM_ARR_PL;
     pl->pos = getEmptyPoint();
-    placeObj(pl->pos, OBJECTS[type]);
+    placeObj(pl->pos, type);
     return pl;
 }
 
 void wumpusMove(player* w){
-    rmObj(w->pos, OBJECTS[WUMPUS]);
+    rmObj(w->pos);
     free(w->pos);
     w->pos = getEmptyPoint();
-    placeObj(w->pos, OBJECTS[WUMPUS]);
+    placeObj(w->pos, WUMPUS);
 }
 
 void playerNear(player* pl){
@@ -96,10 +101,10 @@ char* playerMove(player* pl, DIR a, player* w){
                 break;
             case BAT:
                 msg = "Bats carried you away!\n";
-                rmObj(pl->pos, OBJECTS[PLAYER]);
+                rmObj(pl->pos);
                 grid[pl->pos->x][pl->pos->y].explored = 1;
                 pl->pos = getEmptyPoint();
-                placeObj(pl->pos, OBJECTS[PLAYER]);
+                placeObj(pl->pos, PLAYER);
                 break;
             case ARROW:
                 msg = "You found an arrow!\n";
@@ -135,10 +140,14 @@ char* playerShoot(player* pl, DIR a, player* w){
 }
 
 void endGame(player* pl, player* w){
-    free(pl->pos);
-    free(pl);
-    free(w->pos);
-    free(w);
+    if(pl){
+        free(pl->pos);
+        free(pl);
+    }
+    if(w){
+        free(w->pos);
+        free(w);
+    }
     exit(EXIT_SUCCESS);
 }
 
@@ -147,33 +156,32 @@ void playerDie(player* pl, player* w){
     endGame(pl, w);
 }
 
-void drawGrid(player* pl){
+void drawGrid(player* pl, char* msg){
     int i,j,k;
     clrscr();
-    for(k=0;k<(2*GRID_SIZE_X)+1;k++){
-        putchar('-');
-    }
-    putchar('\n');
-    for(i=0; i<GRID_SIZE_X; i++){
-        for(j=0;j<GRID_SIZE_Y;j++){
+    for(i=0; i<GRID_SIZE_Y; i++){
+        for(k=0;k<=2*GRID_SIZE_X;k++){
+            putchar('-');
+        }
+        putchar('\n');
+        for(j=0; j<GRID_SIZE_X; j++){
             putchar('|');
-            putchar(OBJECTS[grid[i][j].object].ch);
+            putchar(OBJECTS[grid[j][i].object].ch);
         }
         putchar('|');
         putchar('\n');
-        if(i<GRID_SIZE_X+1){
-            for(k=0;k<(2*GRID_SIZE_X)+1;k++){
-                putchar('-');
-            }
-            putchar('\n');
-        }
     }
+    for(k=0; k<=2*GRID_SIZE_X; k++){
+        putchar('-');
+    }
+    putchar('\n');
     printf("ARROWS: %d\n", pl->arrows);
+    printf(msg);
 }
 
 int input(void){
     char c = 0;
-    printf("Enter a direction(wasd), or press f then a direction to fire\n:");
+    printf("Enter a direction(%c%c%c%c), or press %c then a direction to fire\n:", KEY_UP, KEY_LEFT, KEY_DOWN, KEY_RIGHT, KEY_SHOOT);
     do{ c = getchar(); } while(c == '\n');
     while('\n'!=getchar());
     return (int)c;
@@ -218,8 +226,7 @@ void game(void){
     player* w = initPlayer(WUMPUS);
     char* msg = "";
     while(1){
-        drawGrid(pl);
-        printf(msg);
+        drawGrid(pl, msg);
         playerNear(pl);
         msg = action(pl, w, input());
     }
