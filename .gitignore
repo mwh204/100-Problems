@@ -1,38 +1,17 @@
-#### C
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+#ignore all
+*
 
-# Precompiled Headers
-*.gch
-*.pch
+#unignore all files with extensions
+!*.*
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+#unignore all dirs
+!*/
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+#files with extensions to be ignored
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+.exe
 
-# Debug files
-*.dSYM/
+.o
 
-### JAVA
-*.jar
-*.java~
-*.class
+.class
+.java~
