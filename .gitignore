@@ -9,9 +9,9 @@
 
 #files with extensions to be ignored
 
-.exe
+*.exe
 
-.o
+*.o
 
-.class
-.java~
+*.class
+*.java~
