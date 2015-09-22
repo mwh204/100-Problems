@@ -3,6 +3,12 @@
 #define HEIGHT 5
 #define WIDTH 5
 
+/*some "fonts"*/
+#define TYPE1   "_/"
+#define TYPE2   "///"
+#define TYPE3   "<>"
+#define TYPE4   "( )"
+
 const char* LETTERS[NUM_CHARS][HEIGHT] = {
 {
 " ### ",
