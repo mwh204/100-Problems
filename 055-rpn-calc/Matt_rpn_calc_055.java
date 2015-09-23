@@ -3,7 +3,8 @@ import java.util.Scanner;
 public class Matt_rpn_calc_055 {
   
   static final int STACK_SIZE = 4;
-  
+  static int mem = 0;
+      
   public static void main(String[] args) { 
     rpnCalc();
   }
@@ -27,23 +28,45 @@ public class Matt_rpn_calc_055 {
   public static int[] eval(int[] stack, String in){
     char c = in.charAt(0);
     switch(c){
-      case '+': 
+      case '+':  /*addition*/
         stack[0] = stack[1] + stack[0];
         break;
-      case '-': 
+      case '-':  /*subtraction*/
         stack[0] = stack[1] - stack[0];
         break;
-      case '*': 
+      case '*':  /*multiplication*/
         stack[0] = stack[1] * stack[0];
         break;
-      case '/': 
+      case '/':  /*integer division*/
         stack[0] = stack[1] / stack[0];
         break;
+      case '%':  /*modulus*/
+        stack[0] = stack[1] % stack[0];
+        break;
+      case '^': /*exponentiation*/
+        stack[0] = (int)Math.pow(stack[1], stack[0]);
+        break;
       case 'p':
-      case 'P':
+      case 'P': /*pop*/
         stack = pop(stack);
         break;
+      case 's':
+      case 'S': /*swap*/
+        int tmp = stack[0];
+        stack[0] = stack[1];
+        stack[1] = tmp;
+        break;
+      case 'm':
+      case 'M': /*memory save*/
+        mem = stack[0];
+        System.out.println("Saved "+mem+" to memory");
+        break;
+      case 'r': 
+      case 'R': /*memory recall*/
+        stack = push(stack, mem);
+        break;
       case 'q':
+      case 'Q': /*quit*/
         System.exit(0);
         break;
       default: 
@@ -69,6 +92,7 @@ public class Matt_rpn_calc_055 {
     for(int i=1; i<STACK_SIZE; i++){
       stack[i-1] = stack[i];
     }
+    stack[STACK_SIZE-1] = 0;
     return stack;
   }
   
@@ -86,12 +110,12 @@ public class Matt_rpn_calc_055 {
     userInput.close();
     return s;
   }
-  
+
   public static void printStack(int[] stack){
     for(int i=STACK_SIZE-1; i>=0; i--){
       System.out.println("\t"+stack[i]);
     }
-    System.out.println("---------\n");
+    System.out.println("------------\n");
   }
   
 }
