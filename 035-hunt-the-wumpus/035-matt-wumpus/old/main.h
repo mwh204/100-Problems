@@ -4,21 +4,27 @@
 #define _MAIN_H
 
 /*Defines*/
-#define GRID_SIZE_X (15)
-#define GRID_SIZE_Y (10)
+#define clrscr()    puts ("\e[2J\e[1;1H")
+
+#define GRID_SIZE_X (5)
+#define GRID_SIZE_Y (5)
 #define PROB_MAX    (GRID_SIZE_X*GRID_SIZE_X*GRID_SIZE_Y*GRID_SIZE_Y) //max number of tries to get a random point
 
 #define KEY_QUIT    'q'
 #define KEY_SHOOT   'f'
+#define KEY_UP      'w'
+#define KEY_DOWN    's'
+#define KEY_LEFT    'a'
+#define KEY_RIGHT   'd'
 
-#define NUM_PITS    (8)
-#define NUM_BATS    (4)
-#define NUM_ARR_OBJ (3) //number of arrows on the ground
+#define NUM_PITS    (2)
+#define NUM_BATS    (1)
+#define NUM_ARR_OBJ (2) //number of arrows on the ground
 #define NUM_ARR_PL  (5) //initial arrow count
 
 //#define SEE_ALL       //uncomment to see hazards and items
 #ifdef SEE_ALL
-#define cEMPTY      '.'
+#define cEMPTY      ' '
 #define cEXPLORED   '+'
 #define cPLAYER     '@'
 #define cWUMPUS     '#'
@@ -26,7 +32,7 @@
 #define cBAT        '^'
 #define cARROW      '/'
 #else
-#define cEMPTY      '.'
+#define cEMPTY      ' '
 #define cEXPLORED   '+'
 #define cPLAYER     '@'
 #define cWUMPUS     cEMPTY
@@ -54,7 +60,7 @@ typedef struct player {
 } player;
 
 /*const arrays & enums*/
-tile grid[GRID_SIZE_Y][GRID_SIZE_X];
+tile grid[GRID_SIZE_X][GRID_SIZE_Y];
 
 const point DIRECTIONS[NUM_DIR] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 

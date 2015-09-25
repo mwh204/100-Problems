@@ -3,8 +3,6 @@
 #include<stdint.h>
 #include<time.h>
 
-#include<curses.h>
-
 #include "main.h"
 
 int isEmpty(point* pos){
@@ -25,7 +23,7 @@ point* getEmptyPoint(void){
         p->y = rand() % GRID_SIZE_Y;
     }while(!isEmpty(p) && i++<PROB_MAX);
     if(i>=PROB_MAX){
-        printw("Board size not large enough\n");
+        printf("Board size not large enough\n");
         endGame(NULL, NULL);
     }
     return p;
@@ -77,9 +75,9 @@ void playerNear(player* pl){
         point p = {x0, y0};
         if(inBounds(&p)){
             switch(grid[x0][y0].object){
-                case WUMPUS: printw("You smell a Wumpus\n"); break;
-                case PIT: printw("You feel a breeze\n"); break;
-                case BAT: printw("You hear flapping\n"); break;
+                case WUMPUS: printf("You smell a Wumpus\n"); break;
+                case PIT: printf("You feel a breeze\n"); break;
+                case BAT: printf("You hear flapping\n"); break;
                 default: break;
             }
         }
@@ -129,7 +127,7 @@ char* playerShoot(player* pl, DIR a, player* w){
     if(pl->arrows > 0){
         pl->arrows--;
         if(grid[pl->pos->x+DIRECTIONS[a].x][pl->pos->y+DIRECTIONS[a].y].object == OBJECTS[WUMPUS].type){
-            printw("Congratulations! you have killed the Wumpus\n");
+            printf("Congratulations! you have killed the Wumpus\n");
             endGame(pl, w);
         }else{
             wumpusMove(w);
@@ -142,7 +140,6 @@ char* playerShoot(player* pl, DIR a, player* w){
 }
 
 void endGame(player* pl, player* w){
-    getch();
     if(pl){
         free(pl->pos);
         free(pl);
@@ -151,28 +148,43 @@ void endGame(player* pl, player* w){
         free(w->pos);
         free(w);
     }
-    endwin();
     exit(EXIT_SUCCESS);
 }
 
 void playerDie(player* pl, player* w){
-    printw("You are dead\n");
+    printf("You are dead\n");
     endGame(pl, w);
 }
 
 void drawGrid(player* pl, char* msg){
-    int i, j;
-    clear();
+    int i,j,k;
+    clrscr();
     for(i=0; i<GRID_SIZE_Y; i++){
-        for(j=0; j<GRID_SIZE_X; j++){
-            mvaddch(i, j, OBJECTS[grid[j][i].object].ch);
+        for(k=0;k<=2*GRID_SIZE_X;k++){
+            putchar('-');
         }
+        putchar('\n');
+        for(j=0; j<GRID_SIZE_X; j++){
+            putchar('|');
+            putchar(OBJECTS[grid[j][i].object].ch);
+        }
+        putchar('|');
+        putchar('\n');
     }
-    mvprintw(GRID_SIZE_Y+1, 0, msg);
+    for(k=0; k<=2*GRID_SIZE_X; k++){
+        putchar('-');
+    }
+    putchar('\n');
+    printf("ARROWS: %d\n", pl->arrows);
+    printf(msg);
 }
 
 int input(void){
-    return getch();
+    char c = 0;
+    printf("Enter a direction(%c%c%c%c), or press %c then a direction to fire\n:", KEY_UP, KEY_LEFT, KEY_DOWN, KEY_RIGHT, KEY_SHOOT);
+    do{ c = getchar(); } while(c == '\n');
+    while('\n'!=getchar());
+    return (int)c;
 }
 
 char* action(player* pl, player* w, int in){
@@ -208,13 +220,6 @@ char* action(player* pl, player* w, int in){
 }
 
 void game(void){
-    /*ncurses stuff:*/
-    initscr();
-	raw();
-	noecho();
-	keypad(stdscr, TRUE);
-	curs_set(0);
-
     srand((uint32_t)time(NULL));
     initGrid();
     player* pl = initPlayer(PLAYER);
