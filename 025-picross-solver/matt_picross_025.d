@@ -1,6 +1,6 @@
 import std.stdio, std.format, std.conv;
 
-immutable auto GRID_SIZE = 10;
+immutable auto GRID_SIZE = 5;
 immutable ubyte SLVD_FILL = 7;
 immutable ubyte SLVD_EMP = 6;
 immutable string FRMT = "%0"~ to!string(GRID_SIZE*GRID_SIZE) ~"b";
@@ -191,10 +191,7 @@ void main(){
     ubyte[][5] cl2 = [[1], [1,3], [4], [1,3], [1]];
     ubyte[][5] rw2 = [[3], [1], [5], [3], [1,1]];
 
-    ubyte[][10] cl10 = [[4], [1,1], [4,1], [6,1,1], [6,3], [6,3], [6,1,1], [4,1], [1,1], [4]];
-    ubyte[][10] rw10 = [[4], [6], [1,8], [8,1], [1,6,1], [1,4,1], [1,1], [6], [2], [4]];
-
-    picross c = picross(rw10, cl10);
+    picross c = picross(rw2, cl2);
     c = solve(c);
     printPicross(c);
 }
