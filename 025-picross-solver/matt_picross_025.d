@@ -1,7 +1,9 @@
-import std.stdio, std.format;
+import std.stdio, std.format, std.conv;
 
-immutable auto GRID_SIZE = 5;
-immutable auto MAX_HINTS = (GRID_SIZE/2 + GRID_SIZE%2);
+immutable auto GRID_SIZE = 10;
+immutable ubyte SLVD_FILL = 7;
+immutable ubyte SLVD_EMP = 6;
+immutable string FRMT = "%0"~ to!string(GRID_SIZE*GRID_SIZE) ~"b";
 
 struct picross {
     ubyte grid[GRID_SIZE][GRID_SIZE];
@@ -14,12 +16,6 @@ struct picross {
         for(ubyte i=0; i<GRID_SIZE; i++){
             rowHints[i] = getHint(grid[i]);
             colHints[i] = getHint(colToArr(grid, i));
-        }
-    }
-
-    this(int n){
-        for(ubyte i=0; i<GRID_SIZE; i++){
-            //get input
         }
     }
 
@@ -52,9 +48,9 @@ auto getHint(ubyte[] row){
     ubyte count;
     foreach(i ; row){
         if(count == 0){
-            if(i != 0) count++;
+            if(i != 0  && i != SLVD_EMP) count++;
         }else{
-            if(i == 0){
+            if(i == 0 || i == SLVD_EMP){
                 hint ~= count;
                 count = 0;
             }else{
@@ -79,10 +75,15 @@ bool isRowUnambi(picross a, ubyte row){
     possible placement, eg for a size 5 grid
     [0], [1,1,1], [2, 2], [3, 1], [1, 3] [5]
     are all unambiguous*/
-    int prod;
-    foreach(i; a.rowHints[row]) prod += i;
-    prod*=a.rowHints[row].length;
-    return prod >= GRID_SIZE;
+    ulong sum;
+    foreach(i; a.rowHints[row]) sum += i;
+    return sum+a.rowHints[row].length > GRID_SIZE || sum == 0;
+}
+
+bool isColUnambi(picross a, ubyte col){
+    ulong sum;
+    foreach(i; a.colHints[col]) sum += i;
+    return sum+a.colHints[col].length > GRID_SIZE || sum == 0;
 }
 
 void printPicross(picross a){
@@ -108,7 +109,11 @@ void printPicross(picross a){
         foreach(k; a.rowHints[i][]) write(k, " ");
         write("\t");
         for(j=0; j<GRID_SIZE; j++){
-            write(a.grid[i][j], " ");
+            if(a.grid[i][j] != 0 && a.grid[i][j] != SLVD_EMP) {
+                write("1 ");
+            }else{
+                write("0 ");
+            }
         }
         writeln();
     }
@@ -124,18 +129,72 @@ auto bruteForce(picross a){
 }
 
 auto genGrid(picross a, ulong i){
-    string s = format("%025b", i);
-    for(int j=0; j<25; j++){
-        a.grid[j/GRID_SIZE][j%GRID_SIZE] =  cast(ubyte)(s[(s.length-j-1)]- '0');
+    string s = format(FRMT, i);
+    for(int j=0; j<GRID_SIZE*GRID_SIZE; j++){
+        int x = j/GRID_SIZE, y = j%GRID_SIZE;
+        if(a.grid[x][y] != SLVD_EMP && a.grid[x][y] != SLVD_FILL)
+            a.grid[x][y] =  cast(ubyte)(s[(s.length-j-1)]- '0');
+    }
+    return a;
+}
+
+auto setRow(picross a, ubyte row){
+  /*sets the row according to the hints
+    only to be used with unambiguous rows*/
+    ubyte count, k;
+    foreach(i, j; a.rowHints[row]){
+        //writeln(a.grid[row][count], " ", i, " ", j, " ", count);
+        for(k=0;k<j;k++){
+            a.grid[row][i+count++] = SLVD_FILL;
+            if(i+count<GRID_SIZE) a.grid[row][i+count] = SLVD_EMP;
+        }
+    }
+    return a;
+}
+
+auto setCol(picross a, ubyte col){
+    /*sets the row according to the hints
+    only to be used with unambiguous rows*/
+    ubyte count, k;
+    foreach(i, j; a.colHints[][col]){
+        //writeln(a.grid[i+count++][col], " ", i, " ", j, " ", count);
+        for(k=0;k<j;k++){
+            a.grid[i+count++][col] = SLVD_FILL;
+            if(i+count<GRID_SIZE) a.grid[i+count][col] = SLVD_EMP;
+        }
+    }
+    return a;
+}
+
+auto solve(picross a){
+    auto correct = false;
+    for(ubyte i=0; i<GRID_SIZE; i++){
+        if(isRowUnambi(a, i)){
+            a = setRow(a, i);
+        }
+        if(isColUnambi(a, i)){
+            a = setCol(a, i);
+        }
+    }
+    for(ulong i=0; i<2^^(GRID_SIZE*GRID_SIZE) && !correct; i++){
+        a = genGrid(a, i);
+        correct = verifyHint(a);
     }
     return a;
 }
 
 void main(){
-    ubyte[GRID_SIZE][GRID_SIZE] zz = [[2,2,2,2,2], [2,0,0,0,2], [2,0,0,0,2], [2,0,0,0,2], [2,2,2,2,2]];
-    ubyte[][5] rw = [[5], [1], [1,1,1], [1], [5]];
-    ubyte[][5] cl = [[3,1], [1,1], [1,1,1], [1,1], [1,3]];
-    picross c = picross(rw, cl);
-    c = bruteForce(c);
+
+    ubyte[][5] cl1 = [[5], [1], [1,1,1], [1], [5]];
+    ubyte[][5] rw1 = [[1,3], [1,1], [1,1,1], [1,1], [3,1]];
+
+    ubyte[][5] cl2 = [[1], [1,3], [4], [1,3], [1]];
+    ubyte[][5] rw2 = [[3], [1], [5], [3], [1,1]];
+
+    ubyte[][10] cl10 = [[4], [1,1], [4,1], [6,1,1], [6,3], [6,3], [6,1,1], [4,1], [1,1], [4]];
+    ubyte[][10] rw10 = [[4], [6], [1,8], [8,1], [1,6,1], [1,4,1], [1,1], [6], [2], [4]];
+
+    picross c = picross(rw10, cl10);
+    c = solve(c);
     printPicross(c);
 }
