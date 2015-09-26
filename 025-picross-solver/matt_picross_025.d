@@ -1,9 +1,9 @@
 import std.stdio, std.format, std.conv;
 
-immutable auto GRID_SIZE = 5;
+immutable auto GRID_SIZE = 10;
 immutable ubyte SLVD_FILL = 7;
 immutable ubyte SLVD_EMP = 6;
-immutable string FRMT = "%0"~ to!string(GRID_SIZE*GRID_SIZE) ~"b";
+immutable string FRMT = "%0"~ to!string(64) ~"b";
 
 struct picross {
     ubyte grid[GRID_SIZE][GRID_SIZE];
@@ -129,11 +129,12 @@ auto bruteForce(picross a){
 }
 
 auto genGrid(picross a, ulong i){
+    uint count;
     string s = format(FRMT, i);
     for(int j=0; j<GRID_SIZE*GRID_SIZE; j++){
         int x = j/GRID_SIZE, y = j%GRID_SIZE;
         if(a.grid[x][y] != SLVD_EMP && a.grid[x][y] != SLVD_FILL)
-            a.grid[x][y] =  cast(ubyte)(s[(s.length-j-1)]- '0');
+            a.grid[x][y] =  cast(ubyte)(s[(s.length-(count++)-1)]- '0');
     }
     return a;
 }
@@ -166,6 +167,16 @@ auto setCol(picross a, ubyte col){
     return a;
 }
 
+auto getNumUnsolved(picross a){
+    int count;
+    for(auto i=0; i<GRID_SIZE; i++){
+        for(auto j=0; j<GRID_SIZE; j++){
+            if(a.grid[i][j] != SLVD_EMP && a.grid[i][j] != SLVD_FILL) count++;
+        }
+    }
+    return count;
+}
+
 auto solve(picross a){
     auto correct = false;
     for(ubyte i=0; i<GRID_SIZE; i++){
@@ -176,7 +187,8 @@ auto solve(picross a){
             a = setCol(a, i);
         }
     }
-    for(ulong i=0; i<2^^(GRID_SIZE*GRID_SIZE) && !correct; i++){
+
+    for(ulong i=0; i<ulong.max-1 && !correct; i++){
         a = genGrid(a, i);
         correct = verifyHint(a);
     }
@@ -191,7 +203,10 @@ void main(){
     ubyte[][5] cl2 = [[1], [1,3], [4], [1,3], [1]];
     ubyte[][5] rw2 = [[3], [1], [5], [3], [1,1]];
 
-    picross c = picross(rw2, cl2);
+    ubyte[][10] cl10 = [[4], [1,1], [4,1], [6,1,1], [6,3], [6,3], [6,1,1], [4,1], [1,1], [4]];
+    ubyte[][10] rw10 = [[4], [6], [1,8], [8,1], [1,6,1], [1,4,1], [1,1], [6], [2], [4]];
+
+    picross c = picross(rw10, cl10);
     c = solve(c);
     printPicross(c);
 }
