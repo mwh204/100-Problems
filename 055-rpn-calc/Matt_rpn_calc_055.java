@@ -10,10 +10,10 @@ public class Matt_rpn_calc_055 {
   }
   
   public static void rpnCalc(){
-    String s;
+    String s = "";
     int num;
     int[] stack = new int[STACK_SIZE];
-    while(true){
+    while(!s.equals("q") && !s.equals("Q")){
       printStack(stack);
       do{ s = getInput(); }while(s.length() < 1);
       if(isNumeric(s)){
@@ -29,22 +29,22 @@ public class Matt_rpn_calc_055 {
     char c = in.charAt(0);
     switch(c){
       case '+':  /*addition*/
-        stack[0] = stack[1] + stack[0];
+        stack = push(stack, stack[1] + stack[0]);
         break;
       case '-':  /*subtraction*/
-        stack[0] = stack[1] - stack[0];
+        stack = push(stack, stack[1] - stack[0]);
         break;
       case '*':  /*multiplication*/
-        stack[0] = stack[1] * stack[0];
+        stack = push(stack, stack[1] * stack[0]);
         break;
       case '/':  /*integer division*/
-        stack[0] = stack[1] / stack[0];
+        stack = push(stack, stack[1] / stack[0]);
         break;
       case '%':  /*modulus*/
-        stack[0] = stack[1] % stack[0];
+        stack = push(stack, stack[1] % stack[0]);
         break;
       case '^': /*exponentiation*/
-        stack[0] = (int)Math.pow(stack[1], stack[0]);
+        stack = push(stack, (int)Math.pow(stack[1], stack[0]));
         break;
       case 'p':
       case 'P': /*pop*/
@@ -57,7 +57,7 @@ public class Matt_rpn_calc_055 {
         stack[1] = tmp;
         break;
       case 'm':
-      case 'M': /*memory save*/
+      case 'M': /*lock it (memory save)*/
         mem = stack[0];
         System.out.println("Saved "+mem+" to memory");
         break;
@@ -66,8 +66,7 @@ public class Matt_rpn_calc_055 {
         stack = push(stack, mem);
         break;
       case 'q':
-      case 'Q': /*quit*/
-        System.exit(0);
+      case 'Q': /*quit, now handled in rpnCalc()*/
         break;
       default: 
         System.out.println("Unknown operation");
