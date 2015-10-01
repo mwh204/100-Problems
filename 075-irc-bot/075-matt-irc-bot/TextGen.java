@@ -12,13 +12,25 @@ public class TextGen {
   
   final int SENT_MIN_LEN = 5;
   final int SENT_MAX_LEN = 15;
-  
-  final String FILENAME = "v.txt";
-  final String EOL = "QQEOLQQ";
+
+  private final String EOL = "QQEOLQQ";
   
   
   final ArrayList<String[]> dict;
   final ArrayList<String> words;
+  
+    public TextGen(String filename){
+    dict = new ArrayList<String[]>(INITIAL_ITEMS_ARRAYLIST);
+    words = new ArrayList<String>(INITIAL_ITEMS_ARRAYLIST); 
+    
+   try{
+      makeDictionary(dict, words, filename);
+   } catch(IOException e){
+     System.out.println("IO error");
+   }
+   
+  }
+  
   /*
    public static void main(String[] args) { 
    
@@ -52,18 +64,6 @@ public class TextGen {
    }//main
    */  
   
-  public TextGen(){
-    dict = new ArrayList<String[]>(INITIAL_ITEMS_ARRAYLIST);
-    words = new ArrayList<String>(INITIAL_ITEMS_ARRAYLIST); 
-    
-   try{
-      makeDictionary(dict, words);
-   } catch(IOException e){
-     System.out.println("IO error");
-   }
-   
-  }
-  
   public String generateSentence(ArrayList<String[]> dict, ArrayList<String> words){
     int i;
     String currentWord = words.get(randInt(0, words.size()));
@@ -82,14 +82,14 @@ public class TextGen {
     return sentence;
   }//generateSentence
   
-  public void makeDictionary(ArrayList<String[]> dict, ArrayList<String> words) throws IOException {
+  public void makeDictionary(ArrayList<String[]> dict, ArrayList<String> words, String filename) throws IOException {
     String a = "";
     String b = "";
     String line = "";
     int i = 0;
     int index = 0;
     
-    Scanner inFile1 = new Scanner(new File(FILENAME));
+    Scanner inFile1 = new Scanner(new File(filename));
     
     
     while (inFile1.hasNextLine()) {

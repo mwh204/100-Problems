@@ -1,7 +1,11 @@
 /*irc connection Code from http://archive.oreilly.com/pub/h/1966 */
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import java.net.Socket;
 
 public class Matt_irc_bot_075 {
   
@@ -12,7 +16,7 @@ public class Matt_irc_bot_075 {
   
   public static void main(String[] args) throws Exception {
     
-    TextGen bot = new TextGen();
+    TextGen bot = new TextGen("v.txt");
     String out = "";
     
     // Connect directly to the IRC server.
@@ -48,13 +52,15 @@ public class Matt_irc_bot_075 {
         writer.write("PONG " + line.substring(5) + "\r\n");
         //writer.write("PRIVMSG " + CHANNEL + " :I got pinged!\r\n");
         writer.flush();
-      }else if(line.toLowerCase().contains(".speak")){
+      }else if(line.toLowerCase().startsWith(".speak")){
         do{
           out = bot.generateSentence(bot.dict, bot.words);
         }while(bot.countWords(out) < bot.SENT_MIN_LEN);
         out = "PRIVMSG " + CHANNEL +" :"+out+"\r\n";
         writer.write(out);
         writer.flush();
+      }else if(line.toLowerCase().startsWith(".command")){
+        //add other commands here
       }else{
         // Print the raw line received by the bot.
         System.out.println(line);
