@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class Matt_rpn_calc_055 {
   
   static final int STACK_SIZE = 4;
-  static int mem = 0;
       
   public static void main(String[] args) { 
     rpnCalc();
@@ -12,7 +11,7 @@ public class Matt_rpn_calc_055 {
   public static void rpnCalc(){
     String s = "";
     int num;
-    int[] stack = new int[STACK_SIZE];
+    int[] stack = new int[STACK_SIZE+1];
     while(!s.equals("q") && !s.equals("Q")){
       printStack(stack);
       do{ s = getInput(); }while(s.length() < 1);
@@ -29,22 +28,22 @@ public class Matt_rpn_calc_055 {
     char c = in.charAt(0);
     switch(c){
       case '+':  /*addition*/
-        stack = push(stack, stack[1] + stack[0]);
+        stack = push(stack, stack[2] + stack[1]);
         break;
       case '-':  /*subtraction*/
-        stack = push(stack, stack[1] - stack[0]);
+        stack = push(stack, stack[2] - stack[1]);
         break;
       case '*':  /*multiplication*/
-        stack = push(stack, stack[1] * stack[0]);
+        stack = push(stack, stack[2] * stack[1]);
         break;
       case '/':  /*integer division*/
-        stack = push(stack, stack[1] / stack[0]);
+        stack = push(stack, stack[2] / stack[1]);
         break;
       case '%':  /*modulus*/
-        stack = push(stack, stack[1] % stack[0]);
+        stack = push(stack, stack[2] % stack[1]);
         break;
       case '^': /*exponentiation*/
-        stack = push(stack, (int)Math.pow(stack[1], stack[0]));
+        stack = push(stack, (int)Math.pow(stack[2], stack[1]));
         break;
       case 'p':
       case 'P': /*pop*/
@@ -52,18 +51,18 @@ public class Matt_rpn_calc_055 {
         break;
       case 's':
       case 'S': /*swap*/
-        int tmp = stack[0];
-        stack[0] = stack[1];
-        stack[1] = tmp;
+        int tmp = stack[1];
+        stack[1] = stack[2];
+        stack[2] = tmp;
         break;
       case 'm':
       case 'M': /*lock it (memory save)*/
-        mem = stack[0];
-        System.out.println("Saved "+mem+" to memory");
+        stack[0] = stack[1];
+        System.out.println("Saved "+stack[0]+" to memory");
         break;
       case 'r': 
       case 'R': /*memory recall*/
-        stack = push(stack, mem);
+        stack = push(stack, stack[0]);
         break;
       case 'q':
       case 'Q': /*quit, now handled in rpnCalc()*/
@@ -88,18 +87,18 @@ public class Matt_rpn_calc_055 {
   }
   
   public static int[] pop(int[] stack){
-    for(int i=1; i<STACK_SIZE; i++){
+    for(int i=2; i<=STACK_SIZE; i++){
       stack[i-1] = stack[i];
     }
-    stack[STACK_SIZE-1] = 0;
+    stack[STACK_SIZE] = 0;
     return stack;
   }
   
   public static int[] push(int[] stack, int val){
-    for(int i=STACK_SIZE-1; i>=1; i--){
+    for(int i=STACK_SIZE; i>0; i--){
       stack[i] = stack[i-1];
     }
-    stack[0] = val;
+    stack[1] = val;
     return stack;
   }
   
@@ -111,7 +110,7 @@ public class Matt_rpn_calc_055 {
   }
 
   public static void printStack(int[] stack){
-    for(int i=STACK_SIZE-1; i>=0; i--){
+    for(int i=STACK_SIZE; i>0; i--){
       System.out.println("\t"+stack[i]);
     }
     System.out.println("------------\n");
