@@ -1,46 +1,97 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.*;
+import java.util.Map;
 
 public class Markov2 {
   
-  final HashMap<String, Integer> map;
-  final List<MarkovRow> next;
+  final HashMap<String, MarkovRow> map;
   private String lastWord;
   
   public Markov2(){
-    map = new HashMap<String, Integer>();
-    next = new ArrayList<MarkovRow>();
+    map = new HashMap<String, MarkovRow>();
     lastWord = "";
   }
   
   public String toString(){
     String ret = "";
-    for(Map.Entry<String, Integer> m : map.entrySet()){
-      ret +=  m.getValue() +" "+ m.getKey() + "\t" + next.get((Integer)m.getValue()) + "\n";
+    for(Map.Entry<String, MarkovRow> m : map.entrySet()){
+      ret += m.getValue().ind +" "+ m.getKey() + "\t" + m.getValue() + "\n";
     }
     return ret;
   }
   
   public void addWord(String word){ 
     if(!map.containsKey(word)){
-      map.put(word, map.size());
-      next.add(new MarkovRow());
+      map.put(word, new MarkovRow(map.size()));
     }
+    
     if(map.containsKey(lastWord)){
-      next.get(map.get(lastWord)).next.add(map.get(word));
+      if(map.get(lastWord).containsIndex(map.get(word).ind)){
+        map.get(lastWord).incWeight(map.get(lastWord).indexOfWI(map.get(word).ind));
+      }else{
+        map.get(lastWord).addWordIndex(map.get(word).ind);
+      }
     }
     lastWord = word;
   }
+  
   private class MarkovRow{
-    public ArrayList<Integer> next;
     
-    public MarkovRow(){
-      next = new ArrayList<Integer>();
+    public ArrayList<WordIndex> list;
+    protected int ind;
+    
+    public void incWeight(int index){
+      list.get(index).incWeight();
+    }
+    
+    public void addWordIndex(int index){
+      list.add(new WordIndex(index));
+    }
+    
+    public boolean containsIndex(int index){
+      for(WordIndex wi : list){
+        if(wi.index == index){
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    public int indexOfWI(int ind){
+      int i = -1;
+      for(i=0; i<list.size(); i++){
+        if(list.get(i).index == ind) break;
+      }
+      return i;
+    }
+    
+    public MarkovRow(int index){
+      ind = index;
+      list = new ArrayList<WordIndex>();
     }
     
     public String toString(){
-      return next.toString();
+      return list.toString();
     }
-  }
+    
+    private class WordIndex{
+      private int index;
+      private int weight;
+      
+      public WordIndex(int ind){
+        index = ind;
+        weight = 1;
+      }
+      
+      public String toString(){
+        return index+":"+weight;
+      }
+      
+      public void incWeight(){
+        weight++;
+      }
+    }//WordIndex
+    
+  }//MarkovRow
+  
 }//Markov  
