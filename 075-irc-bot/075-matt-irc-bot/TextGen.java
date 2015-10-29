@@ -12,23 +12,23 @@ public class TextGen {
   
   final int SENT_MIN_LEN = 5;
   final int SENT_MAX_LEN = 15;
-
+  
   private final String EOL = "QQEOLQQ";
   
   
   final ArrayList<String[]> dict;
   final ArrayList<String> words;
   
-    public TextGen(String filename){
+  public TextGen(String filename){
     dict = new ArrayList<String[]>(INITIAL_ITEMS_ARRAYLIST);
     words = new ArrayList<String>(INITIAL_ITEMS_ARRAYLIST); 
     
-   try{
+    try{
       makeDictionary(dict, words, filename);
-   } catch(IOException e){
-     System.out.println("IO error");
-   }
-   
+    } catch(IOException e){
+      System.out.println("IO error");
+    }
+    
   }
   
   /*

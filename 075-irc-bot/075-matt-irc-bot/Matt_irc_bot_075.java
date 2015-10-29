@@ -16,7 +16,7 @@ public class Matt_irc_bot_075 {
   
   public static void main(String[] args) throws Exception {
     
-    TextGen bot = new TextGen("v.txt");
+    TextGen2 bot = new TextGen2("v.txt");
     String out = "";
     
     // Connect directly to the IRC server.
@@ -25,9 +25,8 @@ public class Matt_irc_bot_075 {
     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     
     // Log on to the server.
-    writer.write("NICK " + NICK + "\r\n");
-    writer.write("USER " + LOGIN + " 8 * : Java IRC Bot\r\n");
-    writer.flush();
+    sendMsg(writer, "NICK " + NICK + "\r\n");
+    sendMsg(writer, "USER " + LOGIN + " 8 * : Java IRC Bot\r\n");
     
     // Read lines from the server until it tells us we have connected.
     String line = null;
@@ -41,9 +40,8 @@ public class Matt_irc_bot_075 {
       }
     }
     
-    // Join the channel.
-    writer.write("JOIN " + CHANNEL + "\r\n");
-    writer.flush();
+    //Join the channel.  
+    sendMsg(writer, "JOIN " + CHANNEL);
     
     // Keep reading lines from the server.
     while ((line = reader.readLine()) != null) {
@@ -52,13 +50,9 @@ public class Matt_irc_bot_075 {
         writer.write("PONG " + line.substring(5) + "\r\n");
         //writer.write("PRIVMSG " + CHANNEL + " :I got pinged!\r\n");
         writer.flush();
-      }else if(line.toLowerCase().startsWith(".speak")){
-        do{
-          out = bot.generateSentence(bot.dict, bot.words);
-        }while(bot.countWords(out) < bot.SENT_MIN_LEN);
-        out = "PRIVMSG " + CHANNEL +" :"+out+"\r\n";
-        writer.write(out);
-        writer.flush();
+      }else if(line.toLowerCase().contains(".speak")){
+        out = bot.generateSentence();
+        sendMsg(writer, "PRIVMSG " + CHANNEL +" :"+out+"\r\n");
       }else if(line.toLowerCase().startsWith(".command")){
         //add other commands here
       }else{
@@ -67,4 +61,9 @@ public class Matt_irc_bot_075 {
       }
     }
   }//main
+  
+  public static void sendMsg(BufferedWriter writer, String msg) throws Exception{
+    writer.write(msg + "\r\n");
+    writer.flush();
+  }
 }
