@@ -7,8 +7,8 @@ public class BubbleSort extends SortingAlg{
   @Override
   protected void tsort(){
     for(int i=0; i<NUM_ELEMENTS; i++){
-      for(int j=0; j<NUM_ELEMENTS-1; j++){
-        if(array[i] < array[j]){
+      for(int j=0; j<NUM_ELEMENTS; j++){
+        if(list[j] > list[i]){
           swap(i, j);
         }
       }
