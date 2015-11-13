@@ -99,8 +99,8 @@ void drawAll(Game* g){
 
 void initCurses(void){
     initscr();
-	raw();
-	noecho();
+    raw();
+    noecho();
 }
 
 Game* initGame(void){
