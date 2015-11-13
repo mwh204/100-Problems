@@ -4,17 +4,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SortingAlg {
   
   protected int[] list;
-  public final int NUM_ELEMENTS = 25000;
+  public final int NUM_ELEMENTS = 20000;
   private final int MIN_VALUE = 0;
   private final int MAX_VALUE = Integer.MAX_VALUE-1;
   protected String name = "none";
   
-  public SortingAlg(String s){
+  protected SortingAlg(String s){
     this();
     name = s;
   }
   
-  public SortingAlg(){
+  private SortingAlg(){
     list = makeRandomArray();
   }
   
@@ -32,7 +32,7 @@ public class SortingAlg {
   }
   
   protected void tsort(){
-    System.out.println("No sorting algorithm chosen (This should be overridden)");
+    System.out.println("No sorting algorithm chosen (This Method should be overridden)");
   }
   
   protected void swap(int p1, int p2){
