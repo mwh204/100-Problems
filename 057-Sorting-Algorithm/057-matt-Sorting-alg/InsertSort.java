@@ -1,6 +1,6 @@
 
 public class InsertSort extends SortingAlg {
-    
+  
   public InsertSort(){
     super("Insertion Sort");
   }
@@ -16,5 +16,4 @@ public class InsertSort extends SortingAlg {
       list[j] = element;
     }
   }
-  
 }

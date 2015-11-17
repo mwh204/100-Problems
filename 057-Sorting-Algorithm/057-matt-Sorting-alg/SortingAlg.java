@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SortingAlg {
   
   protected int[] list;
-  public final int NUM_ELEMENTS = 20000;
+  public final int NUM_ELEMENTS = 25000;
   private final int MIN_VALUE = 0;
   private final int MAX_VALUE = Integer.MAX_VALUE-1;
   protected String name = "none";
