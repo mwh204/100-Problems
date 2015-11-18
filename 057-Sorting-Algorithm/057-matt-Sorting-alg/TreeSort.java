@@ -1,7 +1,5 @@
 public class TreeSort extends SortingAlg{
   
-  private int index = 0;
-  
   public TreeSort() { 
     super("Tree Sort");
   }
@@ -35,6 +33,7 @@ public class TreeSort extends SortingAlg{
       return n;
     }
     
+    private int index = 0;
     private void toArray(Node n){
       if(n != null){
         toArray(n.left);
