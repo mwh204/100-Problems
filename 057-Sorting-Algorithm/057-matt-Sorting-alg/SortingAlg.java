@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SortingAlg {
   
   protected int[] list;
-  public final int NUM_ELEMENTS = 4000;
+  public final int NUM_ELEMENTS = 20000;
   private final int MIN_VALUE = 0;
   private final int MAX_VALUE = Integer.MAX_VALUE-1;
   protected String name = "none";
@@ -24,7 +24,7 @@ public class SortingAlg {
     long endTime = System.currentTimeMillis();
     System.out.println("Sorting "+ NUM_ELEMENTS+" elements using "+ name +" took "+(endTime-startTime)+" ms");
     System.out.println("The array is correctly sorted: " + isSorted());
-    //System.out.println(this);
+    //System.out.println(this+"\n");
   }
   
   public String toString(){
@@ -45,6 +45,12 @@ public class SortingAlg {
     for(int i=0; i<=list.length-2; i++){
       int j = randRange(i, list.length);
       swap(i, j);
+    }
+  }
+  
+  protected void reverse(){
+    for(int i=0; i<list.length/2; i++){
+      swap(i, list.length-i-1);
     }
   }
   

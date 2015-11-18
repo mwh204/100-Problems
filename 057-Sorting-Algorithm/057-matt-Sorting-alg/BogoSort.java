@@ -1,7 +1,7 @@
 public class BogoSort extends SortingAlg{
   
   public BogoSort(){
-    super("BogoSort");
+    super("Bogo Sort");
   }
   
   @Override

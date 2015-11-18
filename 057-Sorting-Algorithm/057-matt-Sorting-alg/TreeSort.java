@@ -1,5 +1,7 @@
 public class TreeSort extends SortingAlg{
   
+  private int index = 0;
+  
   public TreeSort() { 
     super("Tree Sort");
   }
@@ -7,13 +9,10 @@ public class TreeSort extends SortingAlg{
   @Override
   protected void tsort(){
     BST tree = new BST(list[0]);
-    int a = 0;
-    for(int i : list){
-      tree.insert(tree.root, i);
+    for(int i=1; i<list.length; i++){
+      tree.insert(tree.root, list[i]);
     }
-    while(a<list.length){
-      list[a++] = tree.iterate(tree.root);
-    }
+    tree.toArray(tree.root);
   }
   
   private class BST{
@@ -26,9 +25,9 @@ public class TreeSort extends SortingAlg{
     
     private Node insert(Node n, int e){
       if(n == null){
-        return new Node(e);
+        return (n = new Node(e));
       }
-      if(e <  n.data){
+      if(e < n.data){
         n.left = insert(n.left, e);
       }else{
         n.right = insert(n.right, e);
@@ -36,14 +35,12 @@ public class TreeSort extends SortingAlg{
       return n;
     }
     
-    public int iterate(Node n){
-      int r = 0;
+    private void toArray(Node n){
       if(n != null){
-        iterate(n.left);
-        r = n.data;
-        iterate(n.right);
+        toArray(n.left);
+        list[index++] = n.data;
+        toArray(n.right);
       }
-      return r;
     }
     
     private class Node{

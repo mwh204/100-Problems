@@ -1,7 +1,7 @@
 public class BubbleSort extends SortingAlg{
   
   public BubbleSort(){
-    super("Bubblesort");
+    super("Bubble Sort");
   }
   
   @Override
