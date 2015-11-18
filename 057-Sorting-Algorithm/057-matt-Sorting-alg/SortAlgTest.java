@@ -9,7 +9,6 @@ public class SortAlgTest {
      x.sort();
      /**/
     
-    /*
     x = new BubbleSort();
     x.sort();
     /**/
@@ -26,11 +25,23 @@ public class SortAlgTest {
     x.sort();
     /**/
     
+    x = new QuickSort();
+    x.sort();
+    /**/
+    
     x = new RadixSort();
     x.sort();
     /**/
     
     x = new SelectSort();
+    x.sort();
+    /**/
+    
+    x = new ShellSort();
+    x.sort();
+    /**/
+    
+    x = new TreeSort();
     x.sort();
     /**/
   }

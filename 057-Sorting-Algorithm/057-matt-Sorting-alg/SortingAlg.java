@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SortingAlg {
   
   protected int[] list;
-  public final int NUM_ELEMENTS = 25000;
+  public final int NUM_ELEMENTS = 4000;
   private final int MIN_VALUE = 0;
   private final int MAX_VALUE = Integer.MAX_VALUE-1;
   protected String name = "none";
@@ -42,8 +42,8 @@ public class SortingAlg {
   }
   
   protected void shuffle(){
-    for(int i=NUM_ELEMENTS-1; i>0; i--){
-      int j = randRange(0, i);
+    for(int i=0; i<=list.length-2; i++){
+      int j = randRange(i, list.length);
       swap(i, j);
     }
   }
