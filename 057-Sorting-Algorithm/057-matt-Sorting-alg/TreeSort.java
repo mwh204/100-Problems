@@ -33,13 +33,23 @@ public class TreeSort extends SortingAlg{
       return n;
     }
     
-    private int index = 0;
     private void toArray(Node n){
-      if(n != null){
-        toArray(n.left);
-        list[index++] = n.data;
-        toArray(n.right);
+      toArray(n, 0);
+    }
+    
+    private int toArray(Node n, int i){
+      
+      if(n.left != null){
+        i = toArray(n.left, i);
       }
+      
+      list[i++] = n.data;
+      
+      if(n.right != null){
+        i = toArray(n.right, i);
+      }
+      
+      return i;
     }
     
     private class Node{

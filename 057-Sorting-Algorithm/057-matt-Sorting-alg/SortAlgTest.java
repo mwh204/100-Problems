@@ -10,39 +10,39 @@ public class SortAlgTest {
      /**/
     
     x = new BubbleSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new CocktailSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new InsertSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new JavaSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new QuickSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new RadixSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new SelectSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new ShellSort();
-    x.sort();
+    x.allSort();
     /**/
     
     x = new TreeSort();
-    x.sort();
+    x.allSort();
     /**/
   }
   
