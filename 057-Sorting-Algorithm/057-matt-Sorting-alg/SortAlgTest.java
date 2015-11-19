@@ -17,11 +17,19 @@ public class SortAlgTest {
     x.allSort();
     /**/
     
+    x = new HeapSort();
+    x.allSort();
+    /**/
+    
     x = new InsertSort();
     x.allSort();
     /**/
     
     x = new JavaSort();
+    x.allSort();
+    /**/
+    
+    x = new MergeSort();
     x.allSort();
     /**/
     
@@ -40,7 +48,7 @@ public class SortAlgTest {
     x = new ShellSort();
     x.allSort();
     /**/
-    
+    /*
     x = new TreeSort();
     x.allSort();
     /**/

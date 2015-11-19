@@ -37,7 +37,7 @@ public class SortingAlg {
     long endTime = System.currentTimeMillis();
     long elapsed = endTime-startTime;
     System.out.println("Sorting "+ NUM_ELEMENTS+" elements using "+ name +" took "+elapsed+" ms ("+(elapsed/1000)/60+"m"+(elapsed/1000)+"s)");
-    System.out.println("The array is correctly sorted: " + (sorted = isSorted()));
+    System.out.println("The array is correctly sorted: " + ((sorted = isSorted())? "true" : "FALSE ***************"));
     //System.out.println(this+"\n");
   }
   

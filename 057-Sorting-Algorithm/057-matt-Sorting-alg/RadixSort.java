@@ -15,8 +15,7 @@ public class RadixSort extends SortingAlg {
         boolean move = (list[i] << shift) >= 0;
         
         if(shift == 0 ? !move : move){
-          tmp[j] = list[i];
-          j++;
+          tmp[j++] = list[i];
         }else{
           list[i-j] = list[i];
         }
