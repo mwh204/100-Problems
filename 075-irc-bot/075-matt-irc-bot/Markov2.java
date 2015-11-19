@@ -36,7 +36,7 @@ public class Markov2 {
   }
   
   public void addWordf(String word){
-    addWord(word.toLowerCase().replaceAll("[^a-z\\s']", ""));
+    addWord(word.toLowerCase().replaceAll("[^a-z\\s'-]", ""));
   }
   
   public String nextWord(String prev){

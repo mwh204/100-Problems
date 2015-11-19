@@ -44,7 +44,7 @@ public class TextGen2 {
   }
   
   private void sentenceToMarkov(String sentence){
-    sentence = sentence.trim().replaceAll(" +", " "); //remove excess spaces
+    sentence = sentence.trim().replaceAll("\\s+", " "); //remove excess spaces
     String[] expl = sentence.split(" ");
     for(String s : expl){
       mk.addWordf(s);

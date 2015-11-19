@@ -25,8 +25,8 @@ public class Matt_irc_bot_075 {
     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     
     // Log on to the server.
-    sendMsg(writer, "NICK " + NICK + "\r\n");
-    sendMsg(writer, "USER " + LOGIN + " 8 * : Java IRC Bot\r\n");
+    sendMsg(writer, "NICK " + NICK);
+    sendMsg(writer, "USER " + LOGIN + " 8 * : Java IRC Bot");
     
     // Read lines from the server until it tells us we have connected.
     String line = null;
@@ -47,13 +47,11 @@ public class Matt_irc_bot_075 {
     while ((line = reader.readLine()) != null) {
       if (line.startsWith("PING ")) {
         // We must respond to PINGs to avoid being disconnected.
-        writer.write("PONG " + line.substring(5) + "\r\n");
-        //writer.write("PRIVMSG " + CHANNEL + " :I got pinged!\r\n");
-        writer.flush();
+        sendMsg(writer, "PONG " + line.substring(5));
       }else if(line.toLowerCase().contains(".speak")){
         out = bot.generateSentence();
-        sendMsg(writer, "PRIVMSG " + CHANNEL +" :"+out+"\r\n");
-      }else if(line.toLowerCase().startsWith(".command")){
+        sendMsg(writer, "PRIVMSG " + CHANNEL +" :"+out);
+      }else if(line.toLowerCase().contains(".command")){
         //add other commands here
       }else{
         // Print the raw line received by the bot.
