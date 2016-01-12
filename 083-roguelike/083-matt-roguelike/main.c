@@ -5,7 +5,7 @@
 #include "game.h"
 
 int main(void){
-    srand((unsigned)time(NULL));
+    //srand((unsigned)time(NULL));
     rogue();
     return EXIT_SUCCESS;
 }
