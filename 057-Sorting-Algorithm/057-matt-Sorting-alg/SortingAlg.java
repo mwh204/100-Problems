@@ -7,7 +7,7 @@ public class SortingAlg {
   protected boolean sorted;
   protected String name = "none";
   
-  public final int NUM_ELEMENTS = 100000;
+  private final int NUM_ELEMENTS = 50000000;
   private final int MIN_VALUE = 0;
   private final int MAX_VALUE = Integer.MAX_VALUE-1;
   private final int NUM_NEARLY = (int)(0.25*NUM_ELEMENTS);
@@ -42,6 +42,7 @@ public class SortingAlg {
   }
   
   public void allSort(){
+    System.out.println(name+":");
     
     System.out.println("\nRandom Array:");
     makeRandomArray();
@@ -95,10 +96,8 @@ public class SortingAlg {
   }
   
   protected void nearly(){
-    int j = 1;
     for(int i = 0; i<NUM_NEARLY; i++){
-      j = j * (randRange(50, 179)) % list.length;
-      swap(j, randRange(0, list.length));
+      swap(randRange(0, list.length), randRange(0, list.length));
     }
   }
   
