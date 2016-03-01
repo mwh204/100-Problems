@@ -16,7 +16,7 @@ public class SortAlgTest {
     x = new CocktailSort();
     x.allSort();
     /**/
-    /**/
+    /*
     x = new HeapSort();
     x.allSort();
     /**/
@@ -32,15 +32,11 @@ public class SortAlgTest {
     x = new MergeSort();
     x.allSort();
     /**/
-    /**/
-    x = new MergeSort2();
-    x.allSort();
-    /**/
-    /**/
+    /*
     x = new QuickSort();
     x.allSort();
     /**/
-    /**/
+    /*
     x = new RadixSort();
     x.allSort();
     /**/
@@ -48,7 +44,7 @@ public class SortAlgTest {
     x = new SelectSort();
     x.allSort();
     /**/
-    /**/
+    /*
     x = new ShellSort();
     x.allSort();
     /**/

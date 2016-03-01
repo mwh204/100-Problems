@@ -1,17 +1,17 @@
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SortingAlg {
+public abstract class SortingAlg {
   
   protected int[] list;
   protected boolean sorted;
   protected String name = "none";
   
-  private final int NUM_ELEMENTS = 50000000;
+  private final int NUM_ELEMENTS = 100000;
   private final int MIN_VALUE = 0;
   private final int MAX_VALUE = Integer.MAX_VALUE-1;
-  private final int NUM_NEARLY = (int)(0.25*NUM_ELEMENTS);
-  private final int NUM_UNIQUE = (int)(0.2*NUM_ELEMENTS);
+  private final int NUM_NEARLY = 1 + (int)(0.25*NUM_ELEMENTS);
+  private final int NUM_UNIQUE = 1 + (int)(0.2*NUM_ELEMENTS);
   
   protected SortingAlg(String s){
     this();
@@ -65,9 +65,7 @@ public class SortingAlg {
     System.out.print("\n\n==========================================\n\n");
   }
   
-  protected void tsort(){
-    System.out.println("No sorting algorithm chosen (This Method should be overridden)");
-  }
+  protected abstract void tsort();
   
   protected void swap(int p1, int p2){
     int temp = list[p1];
