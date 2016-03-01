@@ -1,0 +1,21 @@
+#ignore all
+*
+
+#unignore all files with extensions
+!*.*
+
+#unignore all dirs
+!*/
+
+#unignore makefile
+!makefile
+!Makefile
+
+#files with extensions to be ignored
+
+*.exe
+
+*.o
+
+*.class
+*.java~

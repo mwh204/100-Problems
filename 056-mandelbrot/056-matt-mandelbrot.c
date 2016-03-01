@@ -2,7 +2,6 @@
 #include<math.h>
 #include<complex.h>
 
-
 #define FILL '#'
 #define EMPTY '.'
 #define ITERATIONS 100
@@ -15,7 +14,7 @@ void mandelbrot(void){
         for(x=-2.05; x<0.55; x += 0.03){
             z = 0;
             for(i=0; i<=ITERATIONS; i++){
-                z = (z * z) + (x +  y*I);
+                z = (z * z) + (x + y*I);
             }
             cabs(z)<2.0? putchar(FILL) : putchar(EMPTY);
         }

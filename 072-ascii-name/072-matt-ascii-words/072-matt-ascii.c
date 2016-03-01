@@ -3,11 +3,9 @@
 
 #include "name.h"
 
-#define REPL "_/"
-
-void space(void){
+void space(char* font){
     int i;
-    for(i=0; i<strlen(REPL); i++){
+    for(i=0; i<strlen(font); i++){
         putchar(' ');
     }
 }
@@ -20,19 +18,19 @@ char translatePos(char a){
 
 }
 
-void printLetter(char a, int i){
+void printLetter(char a, int i, char* font){
     int j;
     for(j=0; j<WIDTH; j++){
-        LETTERS[(int)translatePos(a)][i][j] == ORIG ? printf(REPL) : space();
+        LETTERS[(int)translatePos(a)][i][j] == ORIG ? printf(font) : space(font);
     }
-    space();
+    space(font);
 }
 
-void printWord(char* str){
+void printWord(char* str, char* font){
     int i,j;
     for(i=0; i<HEIGHT; i++){
         for(j=0; j<strlen(str); j++){
-            printLetter(str[j], i);
+            printLetter(str[j], i, font);
         }
         printf("\n");
     }
@@ -42,10 +40,10 @@ void printWord(char* str){
 int main(int argc, char* argv[]){
     int i;
     if(argc<2){
-        printWord("no arguments");
+        printWord("no arguments", TYPE4);
     }else{
         for(i=1; i<argc; i++){
-            printWord(argv[i]);
+            printWord(argv[i], TYPE4);
         }
     }
 }

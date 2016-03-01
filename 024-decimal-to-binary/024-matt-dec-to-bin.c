@@ -1,14 +1,17 @@
 #include<stdio.h>
 #include<stdint.h>
+#include<limits.h>
+
+void printBin(void* n, const size_t size);
 
 void printBin(void* n, const size_t size){
-    int32_t i, j;
+    size_t i, j;
     uint8_t byte, *b = (uint8_t*) n;
 
-    for(i=size-1; i>=0; i--){
-        for(j=7; j>=0; j--){
-            byte = b[i] & (1U<<j);
-            printf("%d", (byte >>= j));
+    for(i=size; i>0; i--){
+        for(j=CHAR_BIT; j>0; j--){
+            byte = b[i-1] & (1U<<(j-1));
+            printf("%d", (byte >>= (j-1)));
         }
     }
     putchar('\n');
@@ -18,7 +21,10 @@ int main(void){
     uint16_t a = 5;
     double b = 13.37;
     uint64_t c = 987654321;
+    uint16_t d = 0xF65;
+
     printBin(&a, sizeof(a));
     printBin(&b, sizeof(b));
     printBin(&c, sizeof(c));
+    printBin(&d, sizeof(d));
 }
