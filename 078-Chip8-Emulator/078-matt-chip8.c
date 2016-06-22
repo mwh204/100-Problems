@@ -3,15 +3,13 @@
 #include<stdint.h>
 #include<string.h>
 #include<unistd.h>
-#include<poll.h>
 
 #include<ncurses.h>
 
 #define WIDTH   64
 #define HEIGHT  32
 
-#define DELAY   1
-#define INDELAY 5
+#define DELAY 2
 
 #define KEY1    '1'
 #define KEY2    '2'
@@ -31,8 +29,7 @@
 #define KEYF    'v'
 #define KEYQUIT 'm'
 
-typedef struct Chip8 {
-
+typedef struct {
     uint16_t I;
     uint16_t pc;
 
@@ -40,7 +37,7 @@ typedef struct Chip8 {
     uint16_t sp;
 
     uint8_t V[16];
-    uint8_t memory[4096];
+    uint8_t memory[4097];
 
     uint8_t gfx[WIDTH * HEIGHT];
     uint8_t draw_flag;
@@ -51,8 +48,7 @@ typedef struct Chip8 {
     uint8_t key[16];
 } Chip8;
 
-const uint8_t chip8_fontset[80] =
-{
+static const uint8_t chip8_fontset[80] = {
   0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
   0x20, 0x60, 0x20, 0x20, 0x70, // 1
   0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -86,28 +82,26 @@ int main(int argc, char** argv){
         exit(EXIT_FAILURE);
     }
 
-    initCurses();
     Chip8* emu = initEmu();
     openRom(emu, argv[1]);
+
+    initCurses();
 
     while(1){
         emulateCycle(emu);
 
-        if(emu->draw_flag == 1)
+        if(emu->draw_flag)
             drawGame(emu);
 
-        usleep(1000 * DELAY);
-
+        usleep(DELAY * 1000);
     }
-    endwin();
-    free(emu);
 }
 
 void initCurses(void){
     initscr();
     raw();
     curs_set(0);
-    timeout(INDELAY);
+    timeout(0);
     clear();
     noecho();
 }
@@ -128,8 +122,7 @@ void openRom(Chip8* emu, const char* file){
     FILE* rom;
     rom = fopen(file, "rb");
     if(!rom){
-        mvprintw(0, 0, "error opening file: %s\n", file);
-        endwin();
+        printf("error opening file: %s\n", file);
         free(emu);
         exit(EXIT_FAILURE);
     }
@@ -150,35 +143,34 @@ void drawGame(Chip8* emu){
     }
     refresh();
     emu->draw_flag = 0;
+	memset(emu->key, 0, sizeof(emu->key));
 }
 
 void getInput(Chip8* emu, char input){
-    if(input >= 0){
-        switch(input){
-        case KEY0: emu->key[0] = 1; break;
-        case KEY1: emu->key[1] = 1; break;
-        case KEY2: emu->key[2] = 1; break;
-        case KEY3: emu->key[3] = 1; break;
-        case KEY4: emu->key[4] = 1; break;
-        case KEY5: emu->key[5] = 1; break;
-        case KEY6: emu->key[6] = 1; break;
-        case KEY7: emu->key[7] = 1; break;
-        case KEY8: emu->key[8] = 1; break;
-        case KEY9: emu->key[9] = 1; break;
-        case KEYA: emu->key[10] = 1; break;
-        case KEYB: emu->key[11] = 1; break;
-        case KEYC: emu->key[12] = 1; break;
-        case KEYD: emu->key[13] = 1; break;
-        case KEYE: emu->key[14] = 1; break;
-        case KEYF: emu->key[15] = 1; break;
-        case 'm':
-            endwin();
+    while(input != ERR){
+		emu->key[0x0] = (input == KEY0);
+		emu->key[0x1] = (input == KEY1);
+		emu->key[0x2] = (input == KEY2);
+		emu->key[0x3] = (input == KEY3);
+		emu->key[0x4] = (input == KEY4);
+		emu->key[0x5] = (input == KEY5);
+		emu->key[0x6] = (input == KEY6);
+		emu->key[0x7] = (input == KEY7);
+		emu->key[0x8] = (input == KEY8);
+		emu->key[0x9] = (input == KEY9);
+		emu->key[0xA] = (input == KEYA);
+		emu->key[0xB] = (input == KEYB);
+		emu->key[0xC] = (input == KEYC);
+		emu->key[0xD] = (input == KEYD);
+		emu->key[0xE] = (input == KEYE);
+		emu->key[0xF] = (input == KEYF);
+		
+		if(input == KEYQUIT){
+			endwin();
             free(emu);
             exit(EXIT_SUCCESS);
-            break;
-        }
-    }else{
-        memset(emu->key, 0, sizeof(emu->key));
+		}
+		input = getch();
     }
 }
 
@@ -407,9 +399,7 @@ void emulateCycle(Chip8* emu)
 				case 0x000A: // FX0A: A key press is awaited, and then stored in VX
 				{
 					int keyPress = 0;
-					timeout(-1);
 					getInput(emu, getch());
-                    timeout(INDELAY);
 					for(int i = 0; i < 16; ++i)
 					{
 						if(emu->key[i] != 0)
